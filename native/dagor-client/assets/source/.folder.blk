@@ -1,0 +1,22 @@
+inherit_rules:b=no
+scan_assets:b=yes
+scan_folders:b=yes
+exported:b=yes
+
+Export{
+  ddsxTexPack:t="pytho_assets.dxp.bin"
+  gameResPack:t="pytho_assets.grp"
+}
+
+virtual_res_blk{
+  find:t="^(.*)\.png$"
+  className:t="tex"
+  name:t="$1"
+  contents{
+    convert:b=yes
+    fmt:t="BC7"
+    gamma:r=2.2
+    addrU:t="wrap"
+    addrV:t="wrap"
+  }
+}

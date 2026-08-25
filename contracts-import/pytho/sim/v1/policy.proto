@@ -1,0 +1,72 @@
+// Bot policies, demonstration datasets, and trainer-session records.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/commands.proto";
+
+enum PolicyKind {
+  POLICY_KIND_UNSPECIFIED = 0;
+  POLICY_KIND_SCRIPTED = 1;
+  POLICY_KIND_BEHAVIOR_GRAPH = 2;
+  POLICY_KIND_LEARNED_RL = 3;
+  POLICY_KIND_LEARNED_IMITATION = 4;
+  POLICY_KIND_MCTS = 5;
+  POLICY_KIND_TRAINER_INPUT = 6;   // live human demonstration controller
+}
+
+message BotPolicyRecord {
+  string policy_id = 1;
+  string semantic_version = 2;
+  PolicyKind kind = 3;
+  ContentHash artifact_hash = 4;   // code or checkpoint hash
+  string observation_version = 5;  // observation contract the policy consumes
+  string action_version = 6;       // intent payload version it emits
+  string decision_tier = 7;        // reactive|graph|search|learned
+  uint32 decision_rate_hz_millis = 8; // decision rate * 1000
+  Provenance provenance = 9;
+}
+
+// Exactly what the bot saw: the declared observation, nothing more.
+message ObservationRecord {
+  Tick tick = 1;
+  string observation_version = 2;
+  bytes observation = 3;           // versioned observation payload
+}
+
+enum DatasetProvenanceLabel {
+  DATASET_PROVENANCE_LABEL_UNSPECIFIED = 0;
+  DATASET_PROVENANCE_LABEL_HUMAN_DEMONSTRATION = 1; // actual human input only
+  DATASET_PROVENANCE_LABEL_SYNTHETIC_TRAINER_INPUT = 2; // automated UI input
+}
+
+message DemonstrationStep {
+  ObservationRecord observation = 1;
+  CommandEnvelope requested_intent = 2;  // what the trainer asked
+  CommandResult accepted_result = 3;     // what authority accepted/rejected
+  uint64 input_latency_ns = 4;           // observation shown -> intent submitted
+  string outcome_event_id = 5;
+}
+
+message DemonstrationDataset {
+  string dataset_id = 1;
+  DatasetProvenanceLabel provenance_label = 2;
+  string trainer_identity = 3;     // human id, or the automation harness name
+  string session_id = 4;
+  string policy_id_replaced = 5;
+  ContentHash scenario_hash = 6;
+  repeated string model_pins = 7;
+  repeated DemonstrationStep steps = 8;
+  string recorded_at_utc = 9;
+  ContentHash dataset_hash = 10;
+}
+
+message TrainerSessionEvent {
+  string session_id = 1;
+  Tick tick = 2;
+  string kind = 3;                 // start|handoff|correction|return_to_bot
+  string principal_id = 4;
+  uint64 controlled_entity_id = 5;
+  string dataset_id = 6;
+}

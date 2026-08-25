@@ -1,0 +1,62 @@
+diff --git a/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/dng_scene_viewer.settings.blk b/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/dng_scene_viewer.settings.blk
+--- a/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/dng_scene_viewer.settings.blk
++++ b/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/dng_scene_viewer.settings.blk
+@@ -100,4 +100,5 @@ addons {
+   folder:t = "content/base"
+   folder:t = "content/east_district"
+   folder:t = "content.hq/east_district_hq"
++  folder:t = "content/pytho"
+ }
+diff --git a/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/templates/viewer.entities.blk b/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/templates/viewer.entities.blk
+--- a/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/templates/viewer.entities.blk
++++ b/samples/dngSceneViewer/prog/gameBase/content/dng_scene_viewer/gamedata/templates/viewer.entities.blk
+@@ -8,5 +8,6 @@ import:t="postfx.blk"
+ import:t="weather.blk"
+ import:t="envi_fx.blk"
+ import:t="character_controller.blk"
++import:t="pytho.entities.blk"
+ import:t="sounds.blk"
+ import_optional:t="#content/east_district/templates/*.pkg.entities.blk"
+diff --git a/samples/dngSceneViewer/prog/jamfile b/samples/dngSceneViewer/prog/jamfile
+--- a/samples/dngSceneViewer/prog/jamfile
++++ b/samples/dngSceneViewer/prog/jamfile
+@@ -8,1 +8,7 @@
+ Target     ?=  $(Game) ;
++GlobalCPPopt +=
++  -Wno-error=deprecated-literal-operator
++  -Wno-error=nan-infinity-disabled
++  -Wno-error=nontrivial-memcall
++  -Wno-error=macro-redefined
++;
+@@ -50,1 +50,2 @@
+ AllSrcFolder_CPP = main render ;
++AddIncludes += main ;
+@@ -90,1 +91,1 @@
+-  opt on main/apple_main.mm = -D__S(X)=#X -DDAGOR_MACOSX_CONTENTS=__S(../../..) ;
++  opt on main/apple_main.mm = -D__S(X)=#X -DDAGOR_MACOSX_CONTENTS=__S(../../..) -Wno-error=main ;
+diff --git a/samples/dngSceneViewer/prog/_aot/jamfile b/samples/dngSceneViewer/prog/_aot/jamfile
+--- a/samples/dngSceneViewer/prog/_aot/jamfile
++++ b/samples/dngSceneViewer/prog/_aot/jamfile
+@@ -11,1 +11,2 @@
+   samples/dngSceneViewer/prog/main/dasGameModulesList.cpp
++  samples/dngSceneViewer/prog/main/pythoFrameWs.cpp
+@@ -12,1 +13,9 @@
+ ;
++AddIncludes += $(Root)/samples/dngSceneViewer/prog/main ;
++WError = no ;
++GlobalCPPopt +=
++  -Wno-error=deprecated-literal-operator
++  -Wno-error=nan-infinity-disabled
++  -Wno-error=nontrivial-memcall
++  -Wno-error=macro-redefined
++;
+diff --git a/samples/dngSceneViewer/prog/main/dasGameModulesList.cpp b/samples/dngSceneViewer/prog/main/dasGameModulesList.cpp
+--- a/samples/dngSceneViewer/prog/main/dasGameModulesList.cpp
++++ b/samples/dngSceneViewer/prog/main/dasGameModulesList.cpp
+@@ -6,1 +6,5 @@
+-void pull_game_das() { NEED_MODULE(PuddleQueryManagerModule); }
++void pull_game_das()
++{
++  NEED_MODULE(PuddleQueryManagerModule);
++  NEED_MODULE(PythoFrameWsModule);
++}

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"type":"frame","runId":"run-ship-001","sequence":0,"simTimeSec":0,"coordinateFrame":"ENU","entities":[{"id":"merchant-1","entityClass":"ship","assetId":"cargo_ship_liberty","positionM":{"east":-2000,"up":0,"north":900},"attitudeDeg":{"heading":330,"pitch":0,"roll":0},"status":"active","visible":true}],"tracks":[],"events":[]}

@@ -1,0 +1,47 @@
+shaders:t="../../../../../../../../private/tmp/pytho-dagor-20260810/east-extract/samples/dngSceneViewer/viewer/compiledShaders/gameMTL"
+
+assets{
+  base:t="source"
+  types{
+    type:t="tex"
+    type:t="rendInst"
+  }
+
+  export{
+    plugins{
+      folder:t="*common"
+    }
+
+    types{
+      type:t="tex"
+      type:t="rendInst"
+    }
+    cache:t="cache"
+    useCache2Fast:b=yes
+    packlist:t="respacks.blk"
+    defaultDdsxTexPack:t="pytho_assets.dxp.bin"
+    destination{
+      PC:t="build"
+    }
+    destGrpHdrCache{
+      PC:t="build/grp_hdr.vromfs.bin"
+      gameRelatedPath:t="."
+    }
+    folderDefaults{
+      ddsxTexPack:t="pytho_assets.dxp.bin"
+      gameResPack:t="pytho_assets.grp"
+    }
+  }
+
+  build{
+    preferZSTD:b=yes
+    writeDdsxTexPackVer:i=3
+    writeGameResPackVer:i=3
+    rendInst{
+      forceRiExtra:b=yes
+    }
+    tex{
+      defMaxTexSz:i=4096
+    }
+  }
+}

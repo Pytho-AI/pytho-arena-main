@@ -1,0 +1,11 @@
+{
+  "version": "logical-hash-v1",
+  "tick": 1200,
+  "revision": 314,
+  "entity_ids": [
+    "9223372036854780050",
+    "7"
+  ],
+  "hash": "3c48e95563964bfb39e2804f70e96e9b039357ff93b292af7953f909d3f736b4",
+  "hash_with_render_variant": "3c48e95563964bfb39e2804f70e96e9b039357ff93b292af7953f909d3f736b4"
+}

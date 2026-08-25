@@ -1,0 +1,672 @@
+{
+  "schema_version": "2.0",
+  "scenario_id": "document-85fe0ad9d371",
+  "version": 0,
+  "name": "Joint Expeditionary Base (JEB) Little Creek \u2013 Fort Story \u2014 Fictionalized C-UAS",
+  "description": "A document-derived, fictionalized coastal-urban counter-UAS scenario. It retains broad mission and asset categories while replacing real geometry, vulnerability locations, and defensive positions with a synthetic layout.",
+  "duration_seconds": 150.0,
+  "step_seconds": 1.0,
+  "seed": 100535002,
+  "evaluation_faction_id": "defense",
+  "world": {
+    "width": 120.0,
+    "height": 100.0,
+    "vertical_extent": 10.0
+  },
+  "visualization": {
+    "environment": "coastal_urban",
+    "static_assets": [
+      {
+        "id": "operations-center",
+        "kind": "office_block",
+        "position": [
+          80.0,
+          60.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.4
+      },
+      {
+        "id": "utility-yard",
+        "kind": "utility_tower",
+        "position": [
+          -80.0,
+          135.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.0
+      },
+      {
+        "id": "water-tank-a",
+        "kind": "storage_tank",
+        "position": [
+          -135.0,
+          110.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.1
+      },
+      {
+        "id": "water-tank-b",
+        "kind": "storage_tank",
+        "position": [
+          -165.0,
+          82.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.85
+      },
+      {
+        "id": "harbor-warehouse-a",
+        "kind": "warehouse",
+        "position": [
+          -330.0,
+          -80.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "harbor-warehouse-b",
+        "kind": "warehouse",
+        "position": [
+          -330.0,
+          -145.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "marina-pier-a",
+        "kind": "marina_pier",
+        "position": [
+          -520.0,
+          -90.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "marina-pier-b",
+        "kind": "marina_pier",
+        "position": [
+          -520.0,
+          -190.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "gate-north",
+        "kind": "gatehouse",
+        "position": [
+          40.0,
+          245.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "gate-south",
+        "kind": "gatehouse",
+        "position": [
+          120.0,
+          -235.0
+        ],
+        "heading_degrees": 270.0,
+        "scale": 1.0
+      },
+      {
+        "id": "urban-block-1",
+        "kind": "mixed_block",
+        "position": [
+          -420.0,
+          80.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.8
+      },
+      {
+        "id": "urban-block-2",
+        "kind": "mixed_block",
+        "position": [
+          -410.0,
+          170.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.98
+      },
+      {
+        "id": "urban-block-3",
+        "kind": "mixed_block",
+        "position": [
+          -340.0,
+          230.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.16
+      },
+      {
+        "id": "urban-block-4",
+        "kind": "mixed_block",
+        "position": [
+          300.0,
+          225.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.8
+      },
+      {
+        "id": "urban-block-5",
+        "kind": "mixed_block",
+        "position": [
+          390.0,
+          150.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.98
+      },
+      {
+        "id": "urban-block-6",
+        "kind": "mixed_block",
+        "position": [
+          430.0,
+          55.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.16
+      },
+      {
+        "id": "urban-block-7",
+        "kind": "mixed_block",
+        "position": [
+          360.0,
+          -45.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.8
+      },
+      {
+        "id": "urban-block-8",
+        "kind": "mixed_block",
+        "position": [
+          300.0,
+          -145.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 0.98
+      },
+      {
+        "id": "cargo-stack-1",
+        "kind": "cargo_stack",
+        "position": [
+          -270.0,
+          -60.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "cargo-stack-2",
+        "kind": "cargo_stack",
+        "position": [
+          -270.0,
+          -115.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "cargo-stack-3",
+        "kind": "cargo_stack",
+        "position": [
+          -270.0,
+          -170.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "cargo-stack-4",
+        "kind": "cargo_stack",
+        "position": [
+          -210.0,
+          -170.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.0
+      },
+      {
+        "id": "perimeter-1",
+        "kind": "fence_segment",
+        "position": [
+          -220.0,
+          250.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-2",
+        "kind": "fence_segment",
+        "position": [
+          -40.0,
+          270.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-3",
+        "kind": "fence_segment",
+        "position": [
+          145.0,
+          270.0
+        ],
+        "heading_degrees": 0.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-4",
+        "kind": "fence_segment",
+        "position": [
+          270.0,
+          205.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-5",
+        "kind": "fence_segment",
+        "position": [
+          275.0,
+          0.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-6",
+        "kind": "fence_segment",
+        "position": [
+          245.0,
+          -210.0
+        ],
+        "heading_degrees": 90.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-7",
+        "kind": "fence_segment",
+        "position": [
+          40.0,
+          -265.0
+        ],
+        "heading_degrees": 180.0,
+        "scale": 1.6
+      },
+      {
+        "id": "perimeter-8",
+        "kind": "fence_segment",
+        "position": [
+          -185.0,
+          -245.0
+        ],
+        "heading_degrees": 180.0,
+        "scale": 1.6
+      }
+    ]
+  },
+  "simulation": {
+    "physics_backend": "kinematic_2d",
+    "physics_step_seconds": null,
+    "sensor_interval_seconds": null,
+    "effects_interval_seconds": null
+  },
+  "factions": [
+    {
+      "id": "threat",
+      "name": "Surveillance UAS",
+      "category": "strategic",
+      "color": "#d15c45",
+      "objectives": [
+        "Reach a synthetic observation zone"
+      ]
+    },
+    {
+      "id": "defense",
+      "name": "Installation Defense",
+      "category": "strategic",
+      "color": "#53a5c8",
+      "objectives": [
+        "Detect low-altitude UAS",
+        "Protect synthetic asset categories"
+      ]
+    },
+    {
+      "id": "civil",
+      "name": "Protected Civil Traffic",
+      "category": "background",
+      "color": "#c6d3cb",
+      "objectives": [
+        "Transit the shared operating area"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source_faction_id": "defense",
+      "target_faction_id": "threat",
+      "disposition": "opponent"
+    },
+    {
+      "source_faction_id": "defense",
+      "target_faction_id": "civil",
+      "disposition": "protected"
+    },
+    {
+      "source_faction_id": "threat",
+      "target_faction_id": "defense",
+      "disposition": "opponent"
+    },
+    {
+      "source_faction_id": "threat",
+      "target_faction_id": "civil",
+      "disposition": "neutral"
+    },
+    {
+      "source_faction_id": "civil",
+      "target_faction_id": "threat",
+      "disposition": "neutral"
+    },
+    {
+      "source_faction_id": "civil",
+      "target_faction_id": "defense",
+      "disposition": "neutral"
+    }
+  ],
+  "protected_zones": [
+    {
+      "id": "synthetic-operations",
+      "center": [
+        82.0,
+        56.0
+      ],
+      "radius": 10.0,
+      "priority": 1.0,
+      "altitude": null
+    },
+    {
+      "id": "synthetic-utilities",
+      "center": [
+        70.0,
+        34.0
+      ],
+      "radius": 8.0,
+      "priority": 0.8,
+      "altitude": null
+    },
+    {
+      "id": "synthetic-access",
+      "center": [
+        94.0,
+        44.0
+      ],
+      "radius": 7.0,
+      "priority": 0.7,
+      "altitude": null
+    }
+  ],
+  "actor_groups": [
+    {
+      "id": "surveillance-suas",
+      "faction_id": "threat",
+      "count": 9,
+      "mission": "attack_objective",
+      "speed": 1.2,
+      "start_edge": "north",
+      "target_zone_id": "synthetic-operations",
+      "attack_probability": 0.0,
+      "domain": "air",
+      "components": {
+        "mobility": {
+          "model": "scenario_default",
+          "max_speed": null,
+          "max_acceleration": 10000.0,
+          "initial_altitude": 0.0
+        },
+        "communications": {
+          "model": "perfect",
+          "range": null,
+          "latency_seconds": 0.0,
+          "packet_success_probability": 1.0
+        },
+        "tags": []
+      }
+    },
+    {
+      "id": "protected-air-traffic",
+      "faction_id": "civil",
+      "count": 3,
+      "mission": "transit",
+      "speed": 0.8,
+      "start_edge": "south",
+      "target_zone_id": null,
+      "attack_probability": 0.0,
+      "domain": "air",
+      "components": {
+        "mobility": {
+          "model": "scenario_default",
+          "max_speed": null,
+          "max_acceleration": 10000.0,
+          "initial_altitude": 0.0
+        },
+        "communications": {
+          "model": "perfect",
+          "range": null,
+          "latency_seconds": 0.0,
+          "packet_success_probability": 1.0
+        },
+        "tags": []
+      }
+    },
+    {
+      "id": "protected-maritime-traffic",
+      "faction_id": "civil",
+      "count": 2,
+      "mission": "transit",
+      "speed": 0.45,
+      "start_edge": "west",
+      "target_zone_id": null,
+      "attack_probability": 0.0,
+      "domain": "maritime",
+      "components": {
+        "mobility": {
+          "model": "scenario_default",
+          "max_speed": null,
+          "max_acceleration": 10000.0,
+          "initial_altitude": 0.0
+        },
+        "communications": {
+          "model": "perfect",
+          "range": null,
+          "latency_seconds": 0.0,
+          "packet_success_probability": 1.0
+        },
+        "tags": []
+      }
+    }
+  ],
+  "sensors": [
+    {
+      "id": "radar",
+      "faction_id": "defense",
+      "position": [
+        22.0,
+        25.0
+      ],
+      "range": 50.0,
+      "fov_degrees": 135.0,
+      "heading_degrees": 15.0,
+      "capacity": 12,
+      "detection_probability": 0.82,
+      "measurement_noise": 0.9,
+      "slew_rate_dps": null,
+      "altitude": 0.0
+    },
+    {
+      "id": "eo-sensor",
+      "faction_id": "defense",
+      "position": [
+        40.0,
+        78.0
+      ],
+      "range": 50.0,
+      "fov_degrees": 135.0,
+      "heading_degrees": 75.0,
+      "capacity": 12,
+      "detection_probability": 0.82,
+      "measurement_noise": 0.9,
+      "slew_rate_dps": null,
+      "altitude": 0.0
+    },
+    {
+      "id": "ir-sensor",
+      "faction_id": "defense",
+      "position": [
+        70.0,
+        24.0
+      ],
+      "range": 50.0,
+      "fov_degrees": 135.0,
+      "heading_degrees": 135.0,
+      "capacity": 12,
+      "detection_probability": 0.82,
+      "measurement_noise": 0.9,
+      "slew_rate_dps": null,
+      "altitude": 0.0
+    },
+    {
+      "id": "rf-sensor",
+      "faction_id": "defense",
+      "position": [
+        96.0,
+        72.0
+      ],
+      "range": 50.0,
+      "fov_degrees": 135.0,
+      "heading_degrees": 195.0,
+      "capacity": 12,
+      "detection_probability": 0.82,
+      "measurement_noise": 0.9,
+      "slew_rate_dps": null,
+      "altitude": 0.0
+    },
+    {
+      "id": "acoustic",
+      "faction_id": "defense",
+      "position": [
+        55.0,
+        48.0
+      ],
+      "range": 50.0,
+      "fov_degrees": 135.0,
+      "heading_degrees": 255.0,
+      "capacity": 12,
+      "detection_probability": 0.82,
+      "measurement_noise": 0.9,
+      "slew_rate_dps": null,
+      "altitude": 0.0
+    }
+  ],
+  "responses": [
+    {
+      "id": "response-alpha",
+      "faction_id": "defense",
+      "position": [
+        58.0,
+        42.0
+      ],
+      "engagement_range": 34.0,
+      "capacity_per_step": 2,
+      "effectiveness": 0.58,
+      "altitude": 0.0,
+      "effector": {
+        "kind": "rf_jammer",
+        "available_uses": 2,
+        "authority_valid_for_seconds": 45.0
+      }
+    },
+    {
+      "id": "response-bravo",
+      "faction_id": "defense",
+      "position": [
+        90.0,
+        58.0
+      ],
+      "engagement_range": 28.0,
+      "capacity_per_step": 1,
+      "effectiveness": 0.66,
+      "altitude": 0.0,
+      "effector": {
+        "kind": "rf_jammer",
+        "available_uses": 2,
+        "authority_valid_for_seconds": 45.0
+      }
+    }
+  ],
+  "rewards": {
+    "attack_success": 3.0,
+    "intercepted": -1.5,
+    "response_intercept": 1.5,
+    "opponent_attack_success": -4.0
+  },
+  "reward_terms": [],
+  "policy_bindings": [
+    {
+      "id": "threat-movement",
+      "name": "Small UAS surveillance route",
+      "faction_id": "threat",
+      "role": "movement",
+      "policy_id": "probe",
+      "implementation": "scripted",
+      "trainable": true,
+      "actor_group_ids": [
+        "surveillance-suas"
+      ],
+      "sensor_ids": []
+    },
+    {
+      "id": "defense-sensing",
+      "name": "Layered sensing network",
+      "faction_id": "defense",
+      "role": "sensing",
+      "policy_id": "coverage",
+      "implementation": "scripted",
+      "trainable": true,
+      "actor_group_ids": [],
+      "sensor_ids": [
+        "radar",
+        "eo-sensor",
+        "ir-sensor",
+        "rf-sensor",
+        "acoustic"
+      ]
+    },
+    {
+      "id": "civil-movement",
+      "name": "Protected air and maritime traffic",
+      "faction_id": "civil",
+      "role": "movement",
+      "policy_id": "transit",
+      "implementation": "scripted",
+      "trainable": false,
+      "actor_group_ids": [
+        "protected-air-traffic",
+        "protected-maritime-traffic"
+      ],
+      "sensor_ids": []
+    }
+  ]
+}

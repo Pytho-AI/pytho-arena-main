@@ -1,0 +1,205 @@
+// gRPC control/query surface hosted by COA. First-slice profile: loopback bind
+// only; the Arena edge is the sole client. Callers set deadlines on every RPC;
+// mutating RPCs carry idempotency keys; messages are bounded; failures use
+// ReasonCode plus gRPC status codes.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/commands.proto";
+import "pytho/sim/v1/state.proto";
+import "pytho/sim/v1/bundle.proto";
+import "pytho/sim/v1/roles.proto";
+import "pytho/sim/v1/rl.proto";
+import "pytho/sim/v1/projection.proto";
+
+message CreateWorldRequest {
+  string bundle_id = 1;          // approved SimulatorBundle to instantiate
+  uint64 scenario_seed = 2;
+  string idempotency_key = 3;
+  string intended_use_label = 4;
+}
+
+message CreateWorldResult {
+  WorldId world_id = 1;
+  BranchId root_branch_id = 2;
+  ReproducibilityRecord repro = 3;
+  ReasonCode reason = 4;
+  string reason_detail = 5;
+}
+
+message DestroyWorldRequest {
+  WorldId world_id = 1;
+  string idempotency_key = 2;
+}
+
+message DestroyWorldResult {
+  bool destroyed = 1;
+}
+
+message ValidateScenarioRequest {
+  bytes scenario_payload = 1;    // canonical scenario artifact bytes
+  string payload_version = 2;
+}
+
+message ValidateScenarioResult {
+  bool valid = 1;
+  repeated string errors = 2;
+  repeated string warnings = 3;
+  ContentHash content_hash = 4;
+}
+
+message SubmitGenerationJobRequest {
+  string request_artifact_id = 1;
+  string idempotency_key = 2;
+}
+
+message GenerationJobQuery {
+  string job_id = 1;
+}
+
+message CancelGenerationJobRequest {
+  string job_id = 1;
+  string idempotency_key = 2;
+}
+
+message ArtifactReviewRequest {
+  string artifact_id = 1;
+  string action = 2;             // review|approve|reject|quarantine
+  ApprovalRecord approval = 3;   // required for approve; kind is verified
+  string idempotency_key = 4;
+}
+
+message ArtifactReviewResult {
+  ArtifactRecord artifact = 1;
+  ReasonCode reason = 2;
+  string reason_detail = 3;
+}
+
+message ActivateBundleRequest {
+  string bundle_id = 1;
+  WorldId world_id = 2;
+  Tick activation_tick = 3;      // must be a paused or branch-fork tick
+  bool as_child_branch = 4;
+  string idempotency_key = 5;
+}
+
+message RollbackBundleRequest {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  string to_bundle_id = 3;       // prior pinned bundle
+  Tick activation_tick = 4;
+  string idempotency_key = 5;
+}
+
+message ActivationResult {
+  ActivationEvent event = 1;
+  BranchInfo child_branch = 2;
+  ReasonCode reason = 3;
+  string reason_detail = 4;
+}
+
+message SubmitCommandsRequest {
+  repeated CommandEnvelope commands = 1;
+  string session_id = 2;         // server derives the principal from this
+}
+
+message SubmitCommandsResult {
+  repeated CommandResult results = 1;
+}
+
+message SnapshotRequest {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  string idempotency_key = 3;
+}
+
+message SnapshotResult {
+  string snapshot_id = 1;
+  Tick tick = 2;
+  ContentHash logical_state_hash = 3;
+}
+
+message CreateBranchRequest {
+  WorldId world_id = 1;
+  BranchId parent_branch_id = 2;
+  string from_snapshot_id = 3;
+  string reason = 4;
+  string idempotency_key = 5;
+}
+
+message CreateBranchResult {
+  BranchInfo branch = 1;
+}
+
+message PauseRateRequest {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  PauseRateCommand control = 3;
+  string session_id = 4;
+  string idempotency_key = 5;
+}
+
+message PauseRateResult {
+  bool paused = 1;
+  double time_scale = 2;
+  Tick tick = 3;
+}
+
+message HealthRequest {}
+
+message HealthResult {
+  string status = 1;             // "ok" | degradation summary
+  string engine_commit = 2;
+  SchemaDescriptor schema = 3;
+  uint64 active_worlds = 4;
+  double last_tick_p95_ms = 5;
+}
+
+message OpenProjectionRequest {
+  string session_id = 1;
+  WorldId world_id = 2;
+  BranchId branch_id = 3;
+  StreamHello hello = 4;
+}
+
+service ExerciseService {
+  // World lifecycle
+  rpc CreateWorld(CreateWorldRequest) returns (CreateWorldResult);
+  rpc DestroyWorld(DestroyWorldRequest) returns (DestroyWorldResult);
+  // Validation
+  rpc ValidateScenario(ValidateScenarioRequest) returns (ValidateScenarioResult);
+  // Commands and time control
+  rpc SubmitCommands(SubmitCommandsRequest) returns (SubmitCommandsResult);
+  rpc SetPauseRate(PauseRateRequest) returns (PauseRateResult);
+  // Snapshots, branches, replay
+  rpc TakeSnapshot(SnapshotRequest) returns (SnapshotResult);
+  rpc CreateBranch(CreateBranchRequest) returns (CreateBranchResult);
+  rpc QueryReplay(ReplayQuery) returns (ReplaySegment);
+  // Roles
+  rpc QueryRole(RoleQuery) returns (RoleQueryResult);
+  // Health
+  rpc Health(HealthRequest) returns (HealthResult);
+  // Server-streamed role-filtered projection (edge consumes, re-serves as WS)
+  rpc OpenProjection(OpenProjectionRequest) returns (stream StreamMessage);
+}
+
+service GenerationService {
+  rpc SubmitGenerationJob(SubmitGenerationJobRequest) returns (GenerationJob);
+  rpc GetGenerationJob(GenerationJobQuery) returns (GenerationJob);
+  rpc CancelGenerationJob(CancelGenerationJobRequest) returns (GenerationJob);
+  rpc ReviewArtifact(ArtifactReviewRequest) returns (ArtifactReviewResult);
+  rpc ActivateBundle(ActivateBundleRequest) returns (ActivationResult);
+  rpc RollbackBundle(RollbackBundleRequest) returns (ActivationResult);
+}
+
+service RlService {
+  rpc Create(RlCreateRequest) returns (RlCreateResult);
+  rpc Reset(RlResetRequest) returns (RlStepResult);
+  rpc Step(RlStepRequest) returns (RlStepResult);
+  rpc Snapshot(RlSnapshotRequest) returns (RlSnapshotResult);
+  rpc Restore(RlRestoreRequest) returns (RlStepResult);
+  rpc Branch(RlBranchRequest) returns (RlBranchResult);
+  rpc Close(RlCloseRequest) returns (RlCloseResult);
+}

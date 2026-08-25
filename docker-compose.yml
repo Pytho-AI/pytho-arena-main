@@ -1,0 +1,24 @@
+services:
+  arena:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Override for a CUDA image on an NVIDIA host, e.g.
+      #   TORCH_INDEX_URL=https://download.pytorch.org/whl/cu124 docker compose build
+      args:
+        TORCH_INDEX_URL: ${TORCH_INDEX_URL:-https://download.pytorch.org/whl/cpu}
+    image: pytho-arena:local
+    ports:
+      # Loopback-only by default, matching scripts/run-arena.sh's 127.0.0.1 host.
+      - "127.0.0.1:${PYTHO_ARENA_PORT:-8096}:8096"
+    environment:
+      PYTHO_ARENA_DATA_DIR: /data/arena
+    volumes:
+      # Named volume, not a bind to ./var: saved scenario versions are immutable
+      # once seeded, so keeping container state separate from the host's var/
+      # avoids one tree shadowing the other.
+      - arena-data:/data
+    restart: unless-stopped
+
+volumes:
+  arena-data:

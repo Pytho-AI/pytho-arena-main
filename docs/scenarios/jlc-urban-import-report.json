@@ -1,0 +1,79 @@
+{
+  "source_filename": "JLC_cUAS_BackgroundData (1).docx",
+  "source_sha256": "85fe0ad9d3711b85eaebb07273a859b0c6d78797a7c0d60589eee181c917bcb8",
+  "source_size_bytes": 8663227,
+  "source_site_name": "Joint Expeditionary Base (JEB) Little Creek \u2013 Fort Story",
+  "matched_sections": [
+    "background",
+    "coordination",
+    "coverage",
+    "protected_assets",
+    "references",
+    "responses",
+    "scope",
+    "sensors",
+    "threat"
+  ],
+  "sensor_modalities": [
+    "Radar",
+    "EO",
+    "IR",
+    "RF",
+    "Acoustic"
+  ],
+  "response_modalities": [
+    "Control jamming",
+    "Sensor jamming",
+    "Directed energy",
+    "Kinetic"
+  ],
+  "embedded_images": 13,
+  "asset_resolution": [
+    {
+      "source_category": "small surveillance UAS",
+      "scene_asset": "quadcopter_surrogate",
+      "implementation": "procedural multirotor with replay truth binding",
+      "status": "resolved"
+    },
+    {
+      "source_category": "layered sensors",
+      "scene_asset": "range_watch_tower",
+      "implementation": "existing detailed asset used as a fused abstract node",
+      "status": "resolved"
+    },
+    {
+      "source_category": "response coordination",
+      "scene_asset": "nasams_fcs",
+      "implementation": "existing detailed asset, labeled only as a generic response vehicle",
+      "status": "resolved"
+    },
+    {
+      "source_category": "protected maritime traffic",
+      "scene_asset": "cargo_ship_liberty",
+      "implementation": "existing detailed traffic surrogate",
+      "status": "resolved"
+    },
+    {
+      "source_category": "coastal and urban context",
+      "scene_asset": "coastal_urban procedural kit",
+      "implementation": "roads, water, blocks, warehouses, marina, utility yard, and perimeter props",
+      "status": "resolved"
+    }
+  ],
+  "safety_transformations": [
+    "Replaced source maps, boundaries, and marked points with a fictional coastal-urban layout.",
+    "Converted named infrastructure into generic protected asset categories.",
+    "Converted named sensor and effector locations into abstract simulation resources.",
+    "Excluded real patrol zones, jurisdiction boundaries, coverage circles, and approach geometry."
+  ],
+  "assumptions": [
+    "The scenario models optical-surveillance access as a zero-damage objective attempt.",
+    "Sensor probabilities, ranges, capacities, and response effectiveness are synthetic training values.",
+    "Protected air and maritime traffic is included to exercise deconfliction."
+  ],
+  "warnings": [
+    "Embedded maps and images were not used as spatial truth.",
+    "Authorities and legal statements remain document context and are not encoded as operational rules.",
+    "A human reviewer must approve the scenario before it is used for analysis or training decisions."
+  ]
+}

@@ -1,0 +1,4 @@
+lod{
+  range:r=10000
+  fname:t="uav_orion.lod00.dag"
+}

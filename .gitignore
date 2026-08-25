@@ -1,0 +1,20 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+var/
+src/pytho_arena/server/frontend-src/node_modules/
+src/pytho_arena/server/frontend-src/.vite/
+src/pytho_arena/server/frontend-src/coverage/
+
+# The imported contract bundle is a COMMITTED artifact, not build output; the
+# blanket `dist/` rule above would otherwise swallow it and the cross-repo
+# freshness check fails on a missing descriptor set.
+!contracts-import/dist/
+!contracts-import/dist/**

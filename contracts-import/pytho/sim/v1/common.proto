@@ -1,0 +1,105 @@
+// Canonical shared primitives for the Pytho exercise engine.
+// Conventions (normative for every message in pytho.sim.v1):
+// - SI units; field names carry the unit suffix (_m, _mps, _rad, _radps, _ns, _s).
+// - World axes are local ENU: +x east, +y north, +z up, meters, WGS84 origin in
+//   TerrainManifest. Body axes: +x forward, +y left, +z up.
+// - Quaternions are scalar-first body-to-world [w, x, y, z].
+// - Heading zero is north, increasing clockwise viewed from above; pitch positive
+//   nose-up; roll positive right-wing-down.
+// - Entity/world/branch IDs are unsigned 64-bit; JavaScript consumers must use
+//   bigint or canonical unsigned-decimal strings, never Number.
+// - Simulation time is integer ticks; tick period is integer nanoseconds.
+// - Never hash raw serialized bytes of these messages for replay identity; use the
+//   canonical logical state hash (coa-engine/docs/adr/0003-logical-state-hash.md).
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+// Version of the contract schema set as a whole. Bumped on any breaking change.
+message SchemaDescriptor {
+  string schema_set = 1;      // e.g. "pytho.sim"
+  uint32 major = 2;           // breaking
+  uint32 minor = 3;           // additive
+  string descriptor_sha256 = 4; // content hash of the FileDescriptorSet
+}
+
+// Inclusive compatibility range for a versioned artifact or peer.
+message VersionRange {
+  uint32 min_major = 1;
+  uint32 min_minor = 2;
+  uint32 max_major = 3;
+  uint32 max_minor = 4;
+}
+
+message WorldId {
+  uint64 value = 1;
+}
+
+message BranchId {
+  uint64 value = 1; // scoped by WorldId; 0 is the root branch
+}
+
+message EntityId {
+  uint64 value = 1; // scoped by WorldId lineage; monotonic; never reused
+}
+
+// Integer simulation tick. Truth for time.
+message Tick {
+  uint64 value = 1;
+}
+
+message TickPeriod {
+  uint64 nanoseconds = 1; // fixed authoritative tick period
+}
+
+message Vec3 {
+  double x = 1; // east, meters (world frame) or body +x forward
+  double y = 2; // north, meters (world frame) or body +y left
+  double z = 3; // up, meters
+}
+
+// Scalar-first body-to-world quaternion.
+message QuatWxyz {
+  double w = 1;
+  double x = 2;
+  double y = 3;
+  double z = 4;
+}
+
+message ContentHash {
+  string algorithm = 1; // "sha256"
+  string hex = 2;       // lowercase hex digest
+}
+
+// Where a value, model, or artifact came from.
+message Provenance {
+  string source_id = 1;        // stable id of the producing artifact/document
+  ContentHash source_hash = 2;
+  string produced_by = 3;      // tool/model/version string
+  string produced_at_utc = 4;  // RFC 3339
+}
+
+// Machine-readable rejection/failure reason. Every rejection names one.
+enum ReasonCode {
+  REASON_CODE_UNSPECIFIED = 0;
+  REASON_CODE_UNAUTHENTICATED = 1;
+  REASON_CODE_FORBIDDEN_ROLE = 2;
+  REASON_CODE_NOT_OWNER = 3;
+  REASON_CODE_STALE_REVISION = 4;
+  REASON_CODE_DUPLICATE_COMMAND = 5;
+  REASON_CODE_TICK_IN_PAST = 6;
+  REASON_CODE_TICK_TOO_FAR_AHEAD = 7;
+  REASON_CODE_INFEASIBLE = 8;
+  REASON_CODE_EXERCISE_RULE = 9;
+  REASON_CODE_UNKNOWN_ENTITY = 10;
+  REASON_CODE_UNKNOWN_WORLD = 11;
+  REASON_CODE_UNKNOWN_BRANCH = 12;
+  REASON_CODE_PAYLOAD_VERSION = 13;
+  REASON_CODE_MALFORMED = 14;
+  REASON_CODE_LIMIT_EXCEEDED = 15;
+  REASON_CODE_AUTHORITY_REQUIRED = 16;
+  REASON_CODE_AUTHORIZATION_SPENT = 17;
+  REASON_CODE_INTERNAL = 18;
+  REASON_CODE_QUARANTINED_ARTIFACT = 19;
+  REASON_CODE_INCOMPATIBLE_VERSION = 20;
+}

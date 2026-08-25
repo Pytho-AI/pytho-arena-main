@@ -1,0 +1,171 @@
+// Authoritative truth-side messages: snapshots, deltas, events, tracks,
+// beliefs, replay, branches. These are NEVER sent to operator/trainer clients;
+// projection.proto carries the client-safe types. A projection builder is the
+// only boundary between the two.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/components.proto";
+import "pytho/sim/v1/models.proto";
+
+message EntityState {
+  EntityId entity_id = 1;
+  IdentityComponent identity = 2;
+  OwnershipComponent ownership = 3;
+  TransformComponent transform = 4;
+  SpatialComponent spatial = 5;
+  RenderRefComponent render_ref = 6;
+  MobilityComponent mobility = 7;
+  TaskComponent tasks = 8;
+  PerceptionComponent perception = 9;
+  CommsEwComponent comms = 10;
+  DamageComponent damage = 11;
+  InventoryComponent inventory = 12;
+  ObjectiveComponent objective = 13;
+  FidelityComponent fidelity = 14;
+}
+
+message SeedManifest {
+  uint64 scenario_seed = 1;
+  map<string, uint64> subsystem_streams = 2; // subsystem name -> derived stream id
+}
+
+// Full reproducibility record pinned by every run.
+message ReproducibilityRecord {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  BranchId parent_branch_id = 3;
+  Tick parent_branch_tick = 4;
+  ContentHash scenario_hash = 5;
+  ContentHash terrain_hash = 6;
+  string schema_descriptor_sha256 = 7;
+  string engine_commit = 8;
+  string engine_build = 9;
+  repeated string model_pins = 10;      // model_id@version=code_hash
+  repeated string data_pins = 11;
+  SeedManifest seeds = 12;
+  string interpreter_version = 13;
+  string dependency_lock_digest = 14;
+  repeated string native_library_versions = 15;
+  string compiler_flags = 16;
+  string determinism_settings = 17;
+  string cpu_gpu_fingerprint = 18;
+  string hardware_profile = 19;         // named profile id
+  string intended_use_label = 20;
+  string runtime_profile = 21;          // engine/runtime profile name
+}
+
+message WorldSnapshot {
+  string snapshot_id = 1;
+  WorldId world_id = 2;
+  BranchId branch_id = 3;
+  Tick tick = 4;
+  uint64 revision = 5;
+  repeated EntityState entities = 6;    // sorted by entity_id
+  ContentHash logical_state_hash = 7;   // canonical logical hash (ADR 0003)
+  ReproducibilityRecord repro = 8;
+}
+
+// Sensor measurement with noise and provenance (truth side).
+message Measurement {
+  string measurement_id = 1;
+  string sensor_id = 2;
+  EntityId sensing_entity = 3;
+  Tick tick = 4;
+  Vec3 measured_position_m = 5;
+  Vec3 measured_velocity_mps = 6;
+  double noise_stddev_m = 7;
+  EntityId truth_entity = 8;            // NEVER leaves the truth store
+  ModelResultStamp model = 9;
+}
+
+enum TrackState {
+  TRACK_STATE_UNSPECIFIED = 0;
+  TRACK_STATE_TENTATIVE = 1;
+  TRACK_STATE_CONFIRMED = 2;
+  TRACK_STATE_COASTING = 3;   // missed updates, still predicted
+  TRACK_STATE_LOST = 4;
+  TRACK_STATE_REACQUIRED = 5;
+}
+
+// Fused track (truth-side record; the projected form strips truth linkage).
+message FusedTrack {
+  string track_id = 1;          // opaque, first-detection ordered, never truth-derived
+  string owning_faction_id = 2;
+  Tick updated_tick = 3;
+  Vec3 estimated_position_m = 4;
+  Vec3 estimated_velocity_mps = 5;
+  repeated double covariance_diag = 6; // position/velocity variance diagonal
+  double confidence = 7;
+  TrackState state = 8;
+  uint32 age_ticks = 9;
+  uint32 missed_updates = 10;
+  string classification = 11;   // faction-visible classification, not truth
+  repeated string evidence_event_ids = 12;
+  repeated string contributing_measurement_ids = 13;
+  EntityId truth_entity = 14;   // association truth; NEVER projected
+}
+
+message BeliefState {
+  string faction_id = 1;
+  Tick tick = 2;
+  repeated FusedTrack tracks = 3;
+  bytes belief_summary = 4;     // versioned faction belief payload
+  string belief_version = 5;
+}
+
+message Event {
+  string event_id = 1;          // deterministic id (canonical rules, ADR 0003)
+  WorldId world_id = 2;
+  BranchId branch_id = 3;
+  Tick tick = 4;
+  uint64 sequence = 5;          // total order within the branch
+  string event_type = 6;        // registered event type name
+  bytes payload = 7;            // event-type-versioned payload
+  string payload_version = 8;
+  repeated string causal_event_ids = 9;
+  repeated EntityId subject_entities = 10;
+  bool evidence = 11;           // true = durable evidence event (never coalesced)
+}
+
+message StateDelta {
+  string delta_id = 1;
+  string base_snapshot_id = 2;
+  Tick from_tick = 3;
+  Tick to_tick = 4;
+  uint64 to_revision = 5;
+  repeated EntityState changed_entities = 6;
+  repeated EntityId removed_entities = 7;
+  repeated Event events = 8;
+}
+
+message BranchInfo {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  BranchId parent_branch_id = 3;
+  Tick fork_tick = 4;
+  string created_from_snapshot_id = 5;
+  string reason = 6;            // e.g. operator decision, bundle activation
+  string created_at_utc = 7;
+}
+
+message ReplayQuery {
+  WorldId world_id = 1;
+  BranchId branch_id = 2;
+  Tick from_tick = 3;
+  Tick to_tick = 4;
+  bool include_events = 5;
+  bool include_snapshots = 6;
+  uint64 event_cursor = 7;      // durable evidence-event cursor
+  uint32 max_items = 8;
+}
+
+message ReplaySegment {
+  repeated WorldSnapshot snapshots = 1;
+  repeated StateDelta deltas = 2;
+  repeated Event events = 3;
+  uint64 next_event_cursor = 4;
+  bool exhausted = 5;
+}

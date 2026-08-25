@@ -1,0 +1,141 @@
+// SimulatorBundle manifest, generation jobs, and artifact lifecycle.
+// A bundle is a content-addressed dependency closure importable into an empty
+// registry and runnable offline with no sibling source files.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+
+enum ArtifactLifecycle {
+  ARTIFACT_LIFECYCLE_UNSPECIFIED = 0;
+  ARTIFACT_LIFECYCLE_DRAFT = 1;
+  ARTIFACT_LIFECYCLE_GENERATED = 2;
+  ARTIFACT_LIFECYCLE_STATIC_CHECKED = 3;
+  ARTIFACT_LIFECYCLE_CONFORMANCE_TESTED = 4;
+  ARTIFACT_LIFECYCLE_SCIENTIFICALLY_LABELED = 5;
+  ARTIFACT_LIFECYCLE_QUARANTINED_PREVIEW = 6;
+  ARTIFACT_LIFECYCLE_APPROVED = 7;
+  ARTIFACT_LIFECYCLE_ACTIVE = 8;
+  ARTIFACT_LIFECYCLE_SUPERSEDED = 9;
+  ARTIFACT_LIFECYCLE_REJECTED = 10;
+}
+
+enum ApprovalKind {
+  APPROVAL_KIND_UNSPECIFIED = 0;
+  APPROVAL_KIND_HUMAN = 1;               // an actual human approval record
+  APPROVAL_KIND_DEVELOPMENT_POLICY = 2;  // recorded policy, composition of approved parts only
+}
+
+message ApprovalRecord {
+  ApprovalKind kind = 1;
+  string approver_identity = 2; // human name/id, or the policy id
+  string approved_at_utc = 3;
+  string scope = 4;             // what exactly was approved
+  string record_id = 5;
+}
+
+enum ArtifactKind {
+  ARTIFACT_KIND_UNSPECIFIED = 0;
+  ARTIFACT_KIND_SIMULATOR_CODE = 1;
+  ARTIFACT_KIND_BOT_POLICY_CODE = 2;
+  ARTIFACT_KIND_PROCEDURAL_ASSET_CODE = 3;
+  ARTIFACT_KIND_ASSET = 4;              // mesh/texture/material product
+  ARTIFACT_KIND_MODEL_CONFIG = 5;
+  ARTIFACT_KIND_SCENARIO = 6;
+  ARTIFACT_KIND_TEST_SUITE = 7;
+  ARTIFACT_KIND_DOCUMENT = 8;
+  ARTIFACT_KIND_TERRAIN_PRODUCT = 9;
+}
+
+message GenerationProvenance {
+  string prompt_hash = 1;       // sha256 of the exact prompt
+  string model_name = 2;        // generating LLM + version
+  ContentHash input_hash = 3;
+  ContentHash output_hash = 4;
+  string tool_version = 5;
+  string generated_at_utc = 6;
+  string reviewer = 7;          // empty until reviewed
+  string reuse_check = 8;       // why generation was needed over library reuse
+}
+
+message ArtifactRecord {
+  string artifact_id = 1;
+  ArtifactKind kind = 2;
+  ContentHash content_hash = 3;
+  ArtifactLifecycle lifecycle = 4;
+  ApprovalRecord approval = 5;
+  GenerationProvenance generation = 6;  // absent for hand-authored artifacts
+  repeated string dependency_artifact_ids = 7;
+  string license = 8;
+  string classification_label = 9;      // "UNCLASSIFIED" for all built-ins
+  repeated string validation_reports = 10;
+  string media_type = 11;
+  uint64 size_bytes = 12;
+}
+
+message BundleEntry {
+  string artifact_id = 1;
+  ContentHash content_hash = 2;
+  string path = 3;              // path inside the bundle content store
+}
+
+message SimulatorBundle {
+  string bundle_id = 1;
+  string semantic_version = 2;
+  ContentHash manifest_hash = 3;        // hash of the canonical manifest form
+  string scenario_artifact_id = 4;      // canonical scenario
+  string initial_snapshot_artifact_id = 5;
+  string clock_profile = 6;             // named tick/rate profile
+  repeated string model_artifact_ids = 7;
+  repeated string policy_artifact_ids = 8;
+  repeated string objective_artifact_ids = 9;
+  string terrain_manifest_artifact_id = 10;
+  string render_manifest_artifact_id = 11;
+  repeated string test_artifact_ids = 12;
+  repeated string model_card_artifact_ids = 13;
+  repeated string source_citation_ids = 14;
+  repeated string assumption_ids = 15;
+  repeated string warnings = 16;
+  repeated BundleEntry content_manifest = 17; // full dependency closure
+  ArtifactLifecycle lifecycle = 18;
+  ApprovalRecord approval = 19;
+  SchemaDescriptor schema = 20;         // schema set the bundle pins
+  VersionRange engine_compatibility = 21;
+  string intended_use = 22;
+  Provenance provenance = 23;
+}
+
+enum GenerationJobState {
+  GENERATION_JOB_STATE_UNSPECIFIED = 0;
+  GENERATION_JOB_STATE_QUEUED = 1;
+  GENERATION_JOB_STATE_RUNNING = 2;
+  GENERATION_JOB_STATE_VALIDATING = 3;
+  GENERATION_JOB_STATE_SUCCEEDED = 4;
+  GENERATION_JOB_STATE_FAILED = 5;
+  GENERATION_JOB_STATE_CANCELLED = 6;
+}
+
+message GenerationJob {
+  string job_id = 1;
+  string request_artifact_id = 2;  // reviewed source scenario / request
+  GenerationJobState state = 3;
+  repeated string produced_artifact_ids = 4;
+  string failure_reason = 5;
+  string submitted_at_utc = 6;
+  string finished_at_utc = 7;
+  string isolation_profile = 8;    // e.g. "oci-container:no-net:ro-inputs"
+}
+
+// Activation/rollback are immutable events; history is never edited.
+message ActivationEvent {
+  string event_id = 1;
+  string bundle_id = 2;
+  WorldId world_id = 3;
+  BranchId branch_id = 4;          // child branch the activation creates/targets
+  Tick activation_tick = 5;
+  string previous_bundle_id = 6;   // for rollback, the bundle being superseded
+  bool is_rollback = 7;
+  ApprovalRecord approval = 8;
+  string recorded_at_utc = 9;
+}

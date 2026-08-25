@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pytho Arena · Training</title>
+  <!-- Standalone page: keeps the vanilla stylesheet, since /static/styles.css is now the React build. -->
+  <link rel="stylesheet" href="/static/training.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <div class="eyebrow">MULTI-FACTION POLICY SIMULATION</div>
+      <h1>Training details</h1>
+    </div>
+    <div class="header-status">
+      <a href="/" class="badge">← back to arena</a>
+      <span id="status-badge" class="badge">loading</span>
+    </div>
+  </header>
+
+  <main class="training-detail">
+    <aside class="panel">
+      <div class="panel-title">
+        <div><h2>Job</h2></div>
+      </div>
+      <div id="training-meta" class="run-meta muted">Loading…</div>
+      <div class="divider"></div>
+      <h3>Latest mean return</h3>
+      <div id="latest-returns" class="faction-outcomes muted">—</div>
+      <div id="training-error" class="message error hidden"></div>
+      <div class="callout">
+        <strong>Interpreting return and loss</strong>
+        <p>Mean episode return is the health signal — it should move once reward
+          events fire. Optimization loss is algorithm-specific, so compare its
+          trend within a run rather than across algorithms. A flat zero return
+          means no reward event fired in any episode.</p>
+      </div>
+    </aside>
+
+    <section class="panel charts-panel">
+      <div class="panel-title">
+        <span id="legend" class="chart-legend"></span>
+      </div>
+      <div class="chart-block">
+        <h3>Mean episode return <small>batch mean of total reward per iteration</small></h3>
+        <div id="returns-chart" class="detail-chart"></div>
+      </div>
+      <div class="chart-block">
+        <h3>Optimization loss <small id="loss-description">algorithm objective</small></h3>
+        <div id="loss-chart" class="detail-chart"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Training history is served live from /api/trainings/{id}</span>
+    <span id="training-id"></span>
+  </footer>
+  <script src="/static/training.js"></script>
+</body>
+</html>

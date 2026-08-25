@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pytho.local/schemas/dagor-frame-v1.schema.json",
+  "title": "Pytho Dagor visualization frame v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "type",
+    "runId",
+    "sequence",
+    "simTimeSec",
+    "coordinateFrame",
+    "entities"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "type": { "const": "frame" },
+    "runId": { "type": "string", "minLength": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "simTimeSec": { "type": "number", "minimum": 0 },
+    "coordinateFrame": { "const": "ENU" },
+    "entities": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": { "$ref": "#/$defs/entity" }
+    },
+    "tracks": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": { "$ref": "#/$defs/track" }
+    },
+    "events": {
+      "type": "array",
+      "items": { "type": "object" }
+    }
+  },
+  "$defs": {
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["east", "up", "north"],
+      "properties": {
+        "east": { "type": "number" },
+        "up": { "type": "number" },
+        "north": { "type": "number" }
+      }
+    },
+    "attitude": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["heading", "pitch", "roll"],
+      "properties": {
+        "heading": { "type": "number" },
+        "pitch": { "type": "number" },
+        "roll": { "type": "number" }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "entityClass", "assetId", "positionM", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "entityClass": {
+          "enum": ["fixed-wing", "multirotor", "sensor", "ground-vehicle", "ship", "effect"]
+        },
+        "assetId": {
+          "enum": [
+            "uav_orion",
+            "mq_1l_usa",
+            "quadcopter_surrogate",
+            "nasams_fcs",
+            "range_watch_tower",
+            "cargo_ship_liberty"
+          ]
+        },
+        "positionM": { "$ref": "#/$defs/position" },
+        "attitudeDeg": { "$ref": "#/$defs/attitude" },
+        "status": {
+          "enum": ["active", "neutralized", "penetrated", "complete", "offline"]
+        },
+        "visible": { "type": "boolean", "default": true }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "positionM", "confidence"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "positionM": { "$ref": "#/$defs/position" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

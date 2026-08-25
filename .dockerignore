@@ -1,0 +1,31 @@
+# Build context exclusions. Keep this in sync with .gitignore where it overlaps.
+
+.git
+.gitignore
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Runtime scenarios and replays: mounted as a volume, never baked into the image.
+var/
+
+# Rebuilt inside the node stage; never copy the host's tree in.
+src/pytho_arena/server/frontend-src/node_modules/
+src/pytho_arena/server/frontend-src/.vite/
+src/pytho_arena/server/frontend-src/coverage/
+
+# Committed build output. The node stage regenerates it, so shipping the host's
+# copy into the context would only mask a stale tree.
+src/pytho_arena/server/frontend/
+
+.DS_Store
+Dockerfile
+.dockerignore
+docker-compose.yml

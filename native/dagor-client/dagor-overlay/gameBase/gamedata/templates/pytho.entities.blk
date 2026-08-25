@@ -1,0 +1,93 @@
+pytho_entity{
+  transform:m=[[1, 0, 0] [0, 1, 0] [0, 0, 1] [0, 0, 0]]
+  _tracked:t="transform"
+  pytho__id:t=""
+  pytho__asset_id:t=""
+  pytho__status:t="active"
+  pytho__visible:b=yes
+}
+
+pytho_rendinst{
+  _use:t="rendinst"
+  ri_extra__isBeingReplaced:b=yes
+}
+
+pytho_uas{
+  _use:t="pytho_entity"
+  "pytho_uas:tag"{}
+}
+
+pytho_uas_orion{
+  _use:t="pytho_uas"
+  _use:t="pytho_rendinst"
+  ri_extra__name:t="uav_orion"
+}
+
+pytho_uas_mq1{
+  _use:t="pytho_uas"
+  _use:t="pytho_rendinst"
+  ri_extra__name:t="mq_1l_usa"
+}
+
+pytho_uas_multirotor{
+  _use:t="pytho_uas"
+  "pytho_multirotor:tag"{}
+}
+
+pytho_sensor{
+  _use:t="pytho_entity"
+  "pytho_sensor:tag"{}
+}
+
+pytho_ground_vehicle{
+  _use:t="pytho_entity"
+  "pytho_ground_vehicle:tag"{}
+}
+
+pytho_response_nasams{
+  _use:t="pytho_ground_vehicle"
+  "pytho_response_asset:tag"{}
+  _use:t="pytho_rendinst"
+  ri_extra__name:t="nasams_fcs"
+}
+
+pytho_sensor_tower{
+  _use:t="pytho_sensor"
+  _use:t="pytho_rendinst"
+  ri_extra__name:t="range_watch_tower"
+}
+
+pytho_ship{
+  _use:t="pytho_entity"
+  "pytho_ship:tag"{}
+}
+
+pytho_ship_liberty{
+  _use:t="pytho_ship"
+  _use:t="pytho_rendinst"
+  ri_extra__name:t="cargo_ship_liberty"
+}
+
+pytho_track{
+  _use:t="pytho_entity"
+  "pytho_track:tag"{}
+  pytho__confidence:r=0
+}
+
+pytho_response_effect{
+  _use:t="pytho_entity"
+  _use:t="environment_effect_base"
+  _group{
+    _tags:t="render"
+    effect__name:t="envir_sparks_burst_big_cmps_fx"
+  }
+}
+
+pytho_penetration_effect{
+  _use:t="pytho_entity"
+  _use:t="environment_effect_base"
+  _group{
+    _tags:t="render"
+    effect__name:t="fire_spot_1m_nosmoke_cmps_fx"
+  }
+}

@@ -1,0 +1,186 @@
+// Versioned ECS component groups. Each component message is a schema-versioned
+// unit; COMPONENT_SCHEMA_VERSIONS in the registry maps message name -> version.
+// Units and axes follow common.proto conventions (SI, ENU, wxyz quaternions).
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+
+enum EntityKind {
+  ENTITY_KIND_UNSPECIFIED = 0;
+  ENTITY_KIND_STATIC_SEMANTIC = 1;    // fully static semantic object
+  ENTITY_KIND_STRUCTURE = 2;          // dynamic immovable structure
+  ENTITY_KIND_MOVABLE = 3;            // dynamic movable entity
+  ENTITY_KIND_TRANSIENT = 4;          // effect/projectile
+  ENTITY_KIND_AGGREGATE = 5;          // formation/aggregate
+}
+
+enum LifecycleState {
+  LIFECYCLE_STATE_UNSPECIFIED = 0;
+  LIFECYCLE_STATE_SPAWNING = 1;
+  LIFECYCLE_STATE_ACTIVE = 2;
+  LIFECYCLE_STATE_DORMANT = 3;
+  LIFECYCLE_STATE_DESTROYED = 4;
+  LIFECYCLE_STATE_REMOVED = 5;
+}
+
+message IdentityComponent {
+  EntityId entity_id = 1;
+  EntityKind kind = 2;
+  string display_name = 3;
+  string source_id = 4;          // provenance id from the scenario/bundle
+  LifecycleState lifecycle = 5;
+  EntityId aggregate_parent = 6; // 0 when not part of an aggregate lineage
+  uint64 spawn_ordinal = 7;      // ordered spawn provenance, NOT packed in the id
+}
+
+message OwnershipComponent {
+  string faction_id = 1;
+  string role_owner = 2;        // exercise role that owns tasking
+  string controller_id = 3;     // active controller principal ("" = autonomous bot)
+  string command_authority = 4; // authority tier required for effects
+  bool protected_entity = 5;    // protected traffic / no-strike
+}
+
+message TransformComponent {
+  Vec3 position_m = 1;          // ENU meters from world origin
+  QuatWxyz orientation = 2;     // body-to-world
+  Vec3 linear_velocity_mps = 3;
+  Vec3 angular_velocity_radps = 4; // body frame
+  Vec3 bounds_half_extent_m = 5;   // axis-aligned in body frame
+}
+
+message SpatialComponent {
+  uint64 cell_id = 1;           // deterministic uniform-grid cell
+  string mobility_class = 2;    // stationary|pedestrian|ground|multirotor|fixed_wing|maritime|aggregate
+  uint32 collision_layer = 3;
+  bool dormant = 4;
+  double nav_footprint_radius_m = 5;
+}
+
+message RenderRefComponent {
+  string asset_id = 1;          // approved asset manifest id; never a renderer object
+  string variant = 2;
+  string damage_state = 3;
+  string animation_state = 4;
+  uint32 lod_hint = 5;
+}
+
+enum FidelityLevel {
+  FIDELITY_LEVEL_UNSPECIFIED = 0;
+  FIDELITY_LEVEL_AGGREGATE = 1;
+  FIDELITY_LEVEL_KINEMATIC = 2;
+  FIDELITY_LEVEL_TACTICAL_SYSTEMS = 3;
+  FIDELITY_LEVEL_RIGID_BODY = 4;
+  FIDELITY_LEVEL_DOMAIN_PLUGIN = 5;
+}
+
+message MobilityComponent {
+  string model_id = 1;          // registered model providing dynamics
+  FidelityLevel active_fidelity = 2;
+  double max_speed_mps = 3;
+  double max_accel_mps2 = 4;
+  double max_turn_rate_radps = 5;
+  double mass_kg = 6;
+}
+
+enum TaskStatus {
+  TASK_STATUS_UNSPECIFIED = 0;
+  TASK_STATUS_PENDING = 1;
+  TASK_STATUS_ACTIVE = 2;
+  TASK_STATUS_SUCCEEDED = 3;
+  TASK_STATUS_FAILED = 4;
+  TASK_STATUS_CANCELLED = 5;
+  TASK_STATUS_UNREACHABLE = 6;  // navigation/precondition proved impossible
+}
+
+message TaskNode {
+  string task_id = 1;
+  string task_type = 2;         // e.g. move_to, patrol, observe, engage, resupply
+  repeated string prerequisite_task_ids = 3;
+  Tick start_tick = 4;
+  Tick deadline_tick = 5;
+  TaskStatus status = 6;
+  string status_reason = 7;
+  bytes parameters = 8;         // task-type-versioned payload (pytho.sim task schema)
+  string parameters_version = 9;
+}
+
+message TaskComponent {
+  string goal_id = 1;
+  repeated TaskNode tasks = 2;  // ordered task graph
+  string current_task_id = 3;
+  string commanding_command_id = 4; // command that installed the goal
+}
+
+message SensorDefinition {
+  string sensor_id = 1;
+  string model_id = 2;          // registered sensor model
+  double range_m = 3;
+  double fov_rad = 4;
+  double boresight_heading_rad = 5;
+  double slew_rate_radps = 6;
+  uint32 track_capacity = 7;
+  double detection_probability = 8; // per-update baseline Pd
+  double noise_stddev_m = 9;
+}
+
+message PerceptionComponent {
+  repeated SensorDefinition sensors = 1;
+}
+
+message CommsEwComponent {
+  repeated string network_ids = 1;
+  double latency_s = 2;
+  double packet_loss = 3;       // [0,1]
+  double bandwidth_bps = 4;
+  double emission_power_w = 5;  // abstract emission level
+  bool jammed = 6;
+  double link_health = 7;       // [0,1]
+}
+
+message ComponentHealth {
+  string component_name = 1;    // e.g. power, comms, sensor, mobility, structure
+  double health = 2;            // [0,1]
+  bool functional = 3;
+  string damage_cause_event_id = 4;
+}
+
+message DamageComponent {
+  repeated ComponentHealth components = 1;
+  double readiness = 2;         // [0,1] aggregate functional capability
+  bool on_fire = 3;
+  double debris_radius_m = 4;
+  Tick repair_complete_tick = 5; // 0 = no repair underway
+}
+
+message InventoryItem {
+  string item_id = 1;           // abstract consumable id
+  double quantity = 2;
+  double capacity = 3;
+}
+
+message InventoryComponent {
+  repeated InventoryItem items = 1;
+  double energy_fraction = 2;   // fuel/battery abstraction [0,1]
+  Tick resupply_complete_tick = 3;
+}
+
+message ObjectiveComponent {
+  string objective_id = 1;
+  string owning_faction_id = 2;
+  double progress = 3;          // [0,1]
+  double cost_accumulated = 4;  // scenario-declared cost units
+  double uncertainty = 5;       // std of progress estimate
+}
+
+message FidelityComponent {
+  FidelityLevel current = 1;
+  FidelityLevel requested = 2;
+  string promotion_reason = 3;
+  Tick cooldown_until_tick = 4;
+  string source_model_id = 5;
+  string target_model_id = 6;
+  double last_transition_error = 7; // model-declared conserved-state error
+}

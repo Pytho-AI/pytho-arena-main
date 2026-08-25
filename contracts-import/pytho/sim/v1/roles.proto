@@ -1,0 +1,52 @@
+// Exercise staff roles, principals, and server-derived grants. Client-supplied
+// role/actor fields anywhere else are audit claims only.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+
+enum ExerciseRole {
+  EXERCISE_ROLE_UNSPECIFIED = 0;
+  EXERCISE_ROLE_EXCON = 1;
+  EXERCISE_ROLE_BLUE_CONTROL = 2;
+  EXERCISE_ROLE_RED_CONTROL = 3;
+  EXERCISE_ROLE_OPERATOR = 4;
+  EXERCISE_ROLE_CONTROLLER = 5;
+  EXERCISE_ROLE_OBSERVER = 6;
+  EXERCISE_ROLE_ANALYST = 7;
+  EXERCISE_ROLE_AUTOMATED = 8;   // bot/policy principals
+  EXERCISE_ROLE_TRAINER = 9;     // demonstration/correction sessions only
+}
+
+message Principal {
+  string principal_id = 1;       // server-issued, session-scoped
+  string identity = 2;           // authenticated identity
+  ExerciseRole role = 3;
+  string faction_id = 4;         // "" for EXCON/analyst/observer
+  WorldId world_id = 5;
+  string session_id = 6;
+  string issued_at_utc = 7;
+  string expires_at_utc = 8;
+}
+
+message Grant {
+  string grant_id = 1;
+  string principal_id = 2;
+  string capability = 3;         // e.g. command.move, command.effect_authorize,
+                                 // view.operator, view.analyst_truth, demo.control
+  repeated uint64 entity_ids = 4; // owned entities (raw id values; JS uses bigint)
+  repeated string task_ids = 5;
+  string expires_at_utc = 6;
+  bool revoked = 7;
+  string revoked_at_utc = 8;
+}
+
+message RoleQuery {
+  string session_id = 1;
+}
+
+message RoleQueryResult {
+  Principal principal = 1;
+  repeated Grant grants = 2;
+}

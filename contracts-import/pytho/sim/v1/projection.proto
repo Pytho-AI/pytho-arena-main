@@ -1,0 +1,141 @@
+// Client role-projection messages for the binary WebSocket stream. These are
+// DIFFERENT schema types from truth (state.proto); the projection builder is
+// the only boundary. A projection contains only authorized fields and a
+// checksum of the authorized projection itself — never a truth checksum,
+// omitted-field hash, or anything letting a client infer hidden state.
+//
+// This is also the renderer-neutral RenderProjection boundary
+// (pytho-arena/docs/adr/0002-renderer-strategy.md): Three.js (tactical),
+// the optional Dagor client, and the planned Unreal 5.8 presentation client
+// all consume exactly this stream. Velocities are included so a client may
+// interpolate 20 Hz state to its own frame rate; no renderer-specific fields
+// belong here, and no renderer receives truth-side messages.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/components.proto";
+
+message ProjectedEntity {
+  // Opaque per-view stable id. Distinct from the authoritative EntityId space
+  // for adversary/unknown objects; own-force entities may expose their real id.
+  string view_entity_id = 1;
+  string faction_id = 2;        // as authorized for this view ("" = unknown)
+  string display_name = 3;      // authorized name or generic label
+  Vec3 position_m = 4;
+  QuatWxyz orientation = 5;
+  Vec3 velocity_mps = 6;
+  string asset_id = 7;          // render asset reference
+  string variant = 8;
+  string damage_state = 9;
+  string animation_state = 10;
+  LifecycleState lifecycle = 11;
+  bool selectable = 12;
+  bool controllable = 13;       // true only for demonstration-session targets
+  string group_id = 14;         // authorized formation/group membership
+  repeated string status_flags = 15; // authorized UI flags, e.g. detected, entered_zone,
+                                     // intercepted, attack_failed, attack_succeeded
+}
+
+message ProjectedTrack {
+  string track_id = 1;          // opaque operator track id
+  Vec3 estimated_position_m = 2;
+  Vec3 estimated_velocity_mps = 3;
+  repeated double covariance_diag = 4;
+  double confidence = 5;
+  string classification = 6;    // authorized classification only
+  uint32 age_ticks = 7;
+  string state = 8;             // tentative|confirmed|coasting|lost|reacquired
+}
+
+message ProjectedEffect {
+  string effect_id = 1;
+  string effect_type = 2;       // UI-safe effect category
+  Vec3 position_m = 3;
+  string source_view_entity_id = 4;
+  string target_track_id = 5;
+  string outcome = 6;           // authorized outcome label
+  Tick tick = 7;
+  string target_view_entity_id = 8; // authorized view id of the affected entity
+}
+
+message ProjectedEvent {
+  string event_id = 1;
+  Tick tick = 2;
+  string event_type = 3;
+  string summary = 4;           // authorized human-readable line
+  bytes payload = 5;            // role-filtered payload
+  string payload_version = 6;
+  uint64 evidence_cursor = 7;   // durable cursor position of this event
+}
+
+enum ProjectionFrameKind {
+  PROJECTION_FRAME_KIND_UNSPECIFIED = 0;
+  PROJECTION_FRAME_KIND_SNAPSHOT = 1;   // full authorized state
+  PROJECTION_FRAME_KIND_DELTA = 2;      // against base_snapshot/last acked
+  PROJECTION_FRAME_KIND_RESYNC = 3;     // forced snapshot + event cursor reset
+}
+
+message ProjectionFrame {
+  uint32 protocol_version = 1;  // projection-stream protocol, starts at 1
+  WorldId world_id = 2;
+  BranchId branch_id = 3;
+  string view_id = 4;           // server-derived view (role+faction+session)
+  uint64 sequence = 5;          // per-connection monotonic
+  Tick tick = 6;
+  uint64 sim_time_ns = 7;
+  ProjectionFrameKind kind = 8;
+  string frame_id = 9;          // snapshot or delta id
+  string base_snapshot_id = 10; // for deltas: the acked base
+  uint64 interest_revision = 11;
+  repeated ProjectedEntity entities = 12;
+  repeated string removed_view_entity_ids = 13;
+  repeated ProjectedTrack tracks = 14;
+  repeated ProjectedEffect effects = 15;
+  repeated ProjectedEvent events = 16;  // evidence events ride a durable cursor
+  ContentHash projection_checksum = 17; // checksum of THIS authorized projection
+  bool paused = 18;
+  double time_scale = 19;
+}
+
+message ClientAck {
+  uint64 sequence = 1;          // highest contiguous sequence received
+  string frame_id = 2;
+  uint64 event_cursor = 3;      // durable evidence cursor persisted client-side
+}
+
+message ResyncRequest {
+  string reason = 1;            // gap|checksum_mismatch|reconnect|overflow
+  uint64 last_sequence = 2;
+  uint64 event_cursor = 3;
+}
+
+message CompressionOffer {
+  repeated string algorithms = 1; // e.g. "none", "deflate"
+}
+
+message StreamLimits {
+  uint32 max_frame_bytes = 1;
+  uint32 max_queued_frames = 2; // bound; overflow forces snapshot+cursor resync
+  uint32 max_entities_per_frame = 3;
+}
+
+// First message on the projection stream in each direction.
+message StreamHello {
+  uint32 protocol_version = 1;
+  string session_token_fingerprint = 2; // never the token itself
+  CompressionOffer compression = 3;
+  StreamLimits limits = 4;
+  SchemaDescriptor schema = 5;
+}
+
+// Envelope for every message on the binary WebSocket projection stream.
+message StreamMessage {
+  oneof msg {
+    StreamHello hello = 1;
+    ProjectionFrame frame = 2;
+    ClientAck ack = 3;
+    ResyncRequest resync = 4;
+  }
+}

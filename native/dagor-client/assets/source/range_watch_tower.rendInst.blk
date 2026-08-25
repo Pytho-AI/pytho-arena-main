@@ -1,0 +1,4 @@
+lod{
+  range:r=10000
+  fname:t="range_watch_tower.lod00.dag"
+}

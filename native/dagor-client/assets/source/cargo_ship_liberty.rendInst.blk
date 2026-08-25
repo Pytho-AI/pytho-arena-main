@@ -1,0 +1,4 @@
+lod{
+  range:r=10000
+  fname:t="cargo_ship_liberty.lod00.dag"
+}

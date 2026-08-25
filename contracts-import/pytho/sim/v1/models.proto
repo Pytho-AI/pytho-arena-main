@@ -1,0 +1,81 @@
+// Scientific model/data registry records and evidence status (VV&A-aligned,
+// DoDI 5000.61 / MIL-STD-3022 structure without claiming accreditation).
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/components.proto";
+
+enum EvidenceStatus {
+  EVIDENCE_STATUS_UNSPECIFIED = 0;
+  EVIDENCE_STATUS_UNVALIDATED = 1;       // allowed for training development, visibly
+  EVIDENCE_STATUS_VERIFIED = 2;          // code verifies its spec
+  EVIDENCE_STATUS_CALIBRATED = 3;        // fitted to a named dataset
+  EVIDENCE_STATUS_VALIDATED = 4;         // validated for the named intended use only
+  EVIDENCE_STATUS_ACCREDITED = 5;        // formal accreditation record exists
+}
+
+enum DeterminismClass {
+  DETERMINISM_CLASS_UNSPECIFIED = 0;
+  DETERMINISM_CLASS_EXACT = 1;           // bit-identical on a pinned hardware class
+  DETERMINISM_CLASS_TOLERANCED = 2;      // reproducible within declared tolerance
+  DETERMINISM_CLASS_STOCHASTIC_SEEDED = 3; // deterministic given the seed manifest
+}
+
+message UnitDeclaration {
+  string field_name = 1;
+  string unit = 2;              // SI unit string, e.g. "m", "m/s", "rad"
+}
+
+message ValidityBound {
+  string quantity = 1;
+  double min = 2;
+  double max = 3;
+  string unit = 4;
+}
+
+message ModelRecord {
+  string model_id = 1;          // stable id
+  string semantic_version = 2;  // semver
+  ContentHash code_hash = 3;
+  ContentHash data_hash = 4;    // calibration/config data
+  string owner = 5;
+  string source = 6;            // citation/origin
+  string license = 7;
+  string domain = 8;            // e.g. air, ground, sensing, comms, effects
+  string intended_use = 9;      // named intended use the evidence refers to
+  repeated FidelityLevel supported_fidelities = 10;
+  repeated string input_components = 11;  // component message names + versions
+  repeated string output_components = 12;
+  repeated UnitDeclaration units = 13;
+  string coordinate_frame = 14; // "world_enu" | declared plugin frame + transform
+  repeated string assumptions = 15;
+  repeated string exclusions = 16;
+  repeated ValidityBound validity_bounds = 17;
+  repeated string known_failure_modes = 18;
+  string uncertainty_model = 19;
+  string calibration_dataset = 20;
+  string calibration_date_utc = 21;
+  repeated string verification_tests = 22;
+  repeated string validation_evidence = 23;
+  repeated string sensitivity_results = 24;
+  EvidenceStatus evidence_status = 25;
+  string accreditation_status = 26;
+  DeterminismClass determinism = 27;
+  repeated string supported_hardware = 28;
+  string performance_evidence = 29;  // pointer to benchmark record
+  repeated string superseded_versions = 30;
+  uint64 update_rate_hz_millis = 31; // fixed update rate * 1000 (0 = per-tick)
+  double compute_cost_estimate_us = 32; // per-entity per-update estimate
+}
+
+// One executed model result's provenance stamp, recorded with its outputs.
+message ModelResultStamp {
+  string model_id = 1;
+  string semantic_version = 2;
+  EvidenceStatus evidence_status = 3;
+  string uncertainty = 4;
+  repeated string assumption_ids = 5;
+  string validity_note = 6;     // set when inputs were outside validity bounds
+}

@@ -1,0 +1,24 @@
+diff --git a/prog/3rdPartyLibs/phys/joltPhysics/jamfile b/prog/3rdPartyLibs/phys/joltPhysics/jamfile
+--- a/prog/3rdPartyLibs/phys/joltPhysics/jamfile
++++ b/prog/3rdPartyLibs/phys/joltPhysics/jamfile
+@@ -48,7 +48,7 @@ if $(Platform) = linux || $(PlatformSpec) = clang {
+   } else {
+     CPPopt += -ffast-math ;
+     if $(Platform) in android { CPPopt += -fno-unsafe-math-optimizations ; }
+-    else if ! $(Platform) in iOS nswitch { CPPopt += -fno-unsafe-math-optimizations -mno-fma ; }
++    else if ! $(Platform) in iOS nswitch && $(PlatformArch) != arm64 { CPPopt += -fno-unsafe-math-optimizations -mno-fma ; }
+   }
+ } else if $(SSEVersion) = 0 { CPPopt += /arch:SSE2 ; } # msvc windows-x86 implied
+ if $(Platform) in ps4 ps5 { AddIncludes += $(Root)/prog/3rdPartyLibs/posix/include/ps4 ; } # sys/prctl.h
+diff --git a/prog/3rdPartyLibs/image/libpng-1.4.22/pngconf.h b/prog/3rdPartyLibs/image/libpng-1.4.22/pngconf.h
+--- a/prog/3rdPartyLibs/image/libpng-1.4.22/pngconf.h
++++ b/prog/3rdPartyLibs/image/libpng-1.4.22/pngconf.h
+@@ -347,1 +347,1 @@
+-      defined(THINK_C) || defined(__SC__) || defined(TARGET_OS_MAC)
++      defined(THINK_C) || defined(__SC__) || (defined(TARGET_OS_MAC) && !defined(__MACH__))
+diff --git a/prog/engine/drv/drv3d_Metal/jamfile b/prog/engine/drv/drv3d_Metal/jamfile
+--- a/prog/engine/drv/drv3d_Metal/jamfile
++++ b/prog/engine/drv/drv3d_Metal/jamfile
+@@ -44,1 +44,2 @@
+ CPPopt += -DINSIDE_DRIVER ;
++CPPopt += -Wno-error=c99-designator ;

@@ -1,0 +1,101 @@
+// Headless RL outer-loop API. The same world, components, systems, fidelity
+// registry, and models as bot/demonstration execution; no Arena or renderer.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+import "pytho/sim/v1/commands.proto";
+import "pytho/sim/v1/state.proto";
+
+message RlCreateRequest {
+  string bundle_id = 1;            // pinned SimulatorBundle
+  uint64 scenario_seed = 2;
+  uint32 num_worlds = 3;           // vectorized batch size (1 = single)
+  string observation_version = 4;
+  string action_version = 5;
+  map<string, string> options = 6;
+}
+
+message RlCreateResult {
+  string env_id = 1;
+  repeated uint64 world_ids = 2;
+  ReasonCode reason = 3;           // set on failure
+  string reason_detail = 4;
+}
+
+message RlResetRequest {
+  string env_id = 1;
+  repeated uint32 world_indices = 2; // empty = all
+  repeated uint64 seeds = 3;         // parallel to world_indices
+}
+
+message RlObservation {
+  uint32 world_index = 1;
+  Tick tick = 2;
+  string observation_version = 3;
+  bytes observation = 4;           // versioned observation payload per agent set
+}
+
+message RlStepRequest {
+  string env_id = 1;
+  // One intent batch per world; intents flow through the same command gate.
+  repeated RlWorldActions actions = 2;
+  uint32 decision_ticks = 3;       // ticks to advance per step (>=1)
+}
+
+message RlWorldActions {
+  uint32 world_index = 1;
+  repeated CommandEnvelope intents = 2;
+}
+
+message RlStepResult {
+  repeated RlWorldStep worlds = 1;
+}
+
+message RlWorldStep {
+  uint32 world_index = 1;
+  RlObservation observation = 2;
+  double reward = 3;
+  bool terminated = 4;             // environment reached a terminal state
+  bool truncated = 5;              // cut off by limit; distinct from terminated
+  repeated CommandResult command_results = 6;
+  ContentHash logical_state_hash = 7; // optional per-step canonical hash
+}
+
+message RlSnapshotRequest {
+  string env_id = 1;
+  repeated uint32 world_indices = 2;
+}
+
+message RlSnapshotResult {
+  repeated string snapshot_ids = 1;
+}
+
+message RlRestoreRequest {
+  string env_id = 1;
+  repeated RlWorldRestore restores = 2;
+}
+
+message RlWorldRestore {
+  uint32 world_index = 1;
+  string snapshot_id = 2;
+}
+
+message RlBranchRequest {
+  string env_id = 1;
+  uint32 world_index = 2;
+  string snapshot_id = 3;
+}
+
+message RlBranchResult {
+  BranchInfo branch = 1;
+}
+
+message RlCloseRequest {
+  string env_id = 1;
+}
+
+message RlCloseResult {
+  bool closed = 1;
+}

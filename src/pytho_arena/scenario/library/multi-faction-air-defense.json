@@ -1,0 +1,196 @@
+{
+  "actor_groups": [
+    {
+      "attack_probability": 0.78,
+      "count": 12,
+      "faction_id": "red",
+      "id": "red-strike",
+      "mission": "attack_objective",
+      "speed": 1.4,
+      "start_edge": "west",
+      "target_zone_id": "objective-alpha"
+    },
+    {
+      "attack_probability": 0.0,
+      "count": 6,
+      "faction_id": "neutral",
+      "id": "neutral-traffic",
+      "mission": "transit",
+      "speed": 0.75,
+      "start_edge": "south",
+      "target_zone_id": null
+    }
+  ],
+  "description": "A Red formation approaches a protected objective while Blue sensing and an abstract response capability operate around neutral traffic.",
+  "duration_seconds": 120.0,
+  "evaluation_faction_id": "blue",
+  "factions": [
+    {
+      "category": "strategic",
+      "color": "#ff6b6b",
+      "id": "red",
+      "name": "Red",
+      "objectives": [
+        "Reach and affect objective-alpha"
+      ]
+    },
+    {
+      "category": "strategic",
+      "color": "#68f0b1",
+      "id": "blue",
+      "name": "Blue",
+      "objectives": [
+        "Detect opponents",
+        "Protect objective-alpha"
+      ]
+    },
+    {
+      "category": "background",
+      "color": "#c7d1cd",
+      "id": "neutral",
+      "name": "Neutral Traffic",
+      "objectives": [
+        "Transit through the operating area"
+      ]
+    }
+  ],
+  "name": "Multi-Faction Air Defense",
+  "policy_bindings": [
+    {
+      "actor_group_ids": [
+        "red-strike"
+      ],
+      "faction_id": "red",
+      "id": "red-movement",
+      "implementation": "scripted",
+      "name": "Red drone swarm",
+      "policy_id": "probe",
+      "role": "movement",
+      "sensor_ids": [],
+      "trainable": true
+    },
+    {
+      "actor_group_ids": [],
+      "faction_id": "blue",
+      "id": "blue-sensing",
+      "implementation": "scripted",
+      "name": "Blue sensor net",
+      "policy_id": "sweep",
+      "role": "sensing",
+      "sensor_ids": [
+        "sensor-north",
+        "sensor-south"
+      ],
+      "trainable": true
+    },
+    {
+      "actor_group_ids": [
+        "neutral-traffic"
+      ],
+      "faction_id": "neutral",
+      "id": "neutral-movement",
+      "implementation": "scripted",
+      "name": "Neutral air traffic",
+      "policy_id": "transit",
+      "role": "movement",
+      "sensor_ids": [],
+      "trainable": false
+    }
+  ],
+  "protected_zones": [
+    {
+      "center": [
+        82.0,
+        50.0
+      ],
+      "id": "objective-alpha",
+      "priority": 1.0,
+      "radius": 10.0
+    }
+  ],
+  "relationships": [
+    {
+      "disposition": "opponent",
+      "source_faction_id": "blue",
+      "target_faction_id": "red"
+    },
+    {
+      "disposition": "protected",
+      "source_faction_id": "blue",
+      "target_faction_id": "neutral"
+    },
+    {
+      "disposition": "opponent",
+      "source_faction_id": "red",
+      "target_faction_id": "blue"
+    },
+    {
+      "disposition": "neutral",
+      "source_faction_id": "red",
+      "target_faction_id": "neutral"
+    },
+    {
+      "disposition": "neutral",
+      "source_faction_id": "neutral",
+      "target_faction_id": "red"
+    },
+    {
+      "disposition": "neutral",
+      "source_faction_id": "neutral",
+      "target_faction_id": "blue"
+    }
+  ],
+  "responses": [
+    {
+      "capacity_per_step": 2,
+      "effectiveness": 0.62,
+      "engagement_range": 32.0,
+      "faction_id": "blue",
+      "id": "blue-response-alpha",
+      "position": [
+        70.0,
+        50.0
+      ]
+    }
+  ],
+  "scenario_id": "multi-faction-air-defense",
+  "schema_version": "2.0",
+  "seed": 7,
+  "sensors": [
+    {
+      "capacity": 10,
+      "detection_probability": 0.88,
+      "faction_id": "blue",
+      "fov_degrees": 115.0,
+      "heading_degrees": 180.0,
+      "id": "sensor-north",
+      "measurement_noise": 0.7,
+      "position": [
+        46.0,
+        66.0
+      ],
+      "range": 50.0
+    },
+    {
+      "capacity": 10,
+      "detection_probability": 0.84,
+      "faction_id": "blue",
+      "fov_degrees": 115.0,
+      "heading_degrees": 180.0,
+      "id": "sensor-south",
+      "measurement_noise": 0.9,
+      "position": [
+        46.0,
+        34.0
+      ],
+      "range": 50.0
+    }
+  ],
+  "step_seconds": 1.0,
+  "version": 0,
+  "world": {
+    "height": 100.0,
+    "vertical_extent": 10.0,
+    "width": 100.0
+  }
+}

@@ -1,0 +1,907 @@
+{
+ "_provenance": "Generated 2026-08-18 by scratchpad/make_raven_fixture.py from scenario/library/strait-sentinel-airbase.json seed 17 via the real recorded rollout path; frame 4 of 151 (most active).",
+ "frame": {
+  "detections": [
+   {
+    "entityId": "one-way-attack-wave-02",
+    "position": [
+     6.246798992156982,
+     74.5358657836914
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-04",
+    "position": [
+     7.304946422576904,
+     70.15753936767578
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-06",
+    "position": [
+     6.71890115737915,
+     37.46676254272461
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-07",
+    "position": [
+     7.380977153778076,
+     35.048038482666016
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-08",
+    "position": [
+     9.064872741699219,
+     28.500253677368164
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-09",
+    "position": [
+     8.816707611083984,
+     44.55953598022461
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-10",
+    "position": [
+     7.113553047180176,
+     48.3674201965332
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-11",
+    "position": [
+     5.3158721923828125,
+     17.88762664794922
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-12",
+    "position": [
+     7.755383491516113,
+     40.30604553222656
+    ],
+    "sensorId": "raven-sensor-north"
+   },
+   {
+    "entityId": "one-way-attack-wave-03",
+    "position": [
+     5.992049217224121,
+     20.718114852905273
+    ],
+    "sensorId": "raven-sensor-south"
+   },
+   {
+    "entityId": "one-way-attack-wave-06",
+    "position": [
+     5.0107831954956055,
+     36.73222732543945
+    ],
+    "sensorId": "raven-sensor-south"
+   },
+   {
+    "entityId": "one-way-attack-wave-07",
+    "position": [
+     7.5850019454956055,
+     35.702022552490234
+    ],
+    "sensorId": "raven-sensor-south"
+   },
+   {
+    "entityId": "one-way-attack-wave-08",
+    "position": [
+     9.111087799072266,
+     27.59535789489746
+    ],
+    "sensorId": "raven-sensor-south"
+   },
+   {
+    "entityId": "one-way-attack-wave-10",
+    "position": [
+     6.154670715332031,
+     47.556785583496094
+    ],
+    "sensorId": "raven-sensor-south"
+   },
+   {
+    "entityId": "support-air-traffic-03",
+    "position": [
+     42.72036361694336,
+     5.242178440093994
+    ],
+    "sensorId": "raven-sensor-south"
+   }
+  ],
+  "eventStream": [
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     6.246798992156982,
+     74.5358657836914
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-02",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     7.304946422576904,
+     70.15753936767578
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-04",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     6.71890115737915,
+     37.46676254272461
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-06",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     7.380977153778076,
+     35.048038482666016
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-07",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     9.064872741699219,
+     28.500253677368164
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-08",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     8.816707611083984,
+     44.55953598022461
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-09",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     7.113553047180176,
+     48.3674201965332
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-10",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     5.3158721923828125,
+     17.88762664794922
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-11",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     7.755383491516113,
+     40.30604553222656
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-north",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-12",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     5.992049217224121,
+     20.718114852905273
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-03",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     5.0107831954956055,
+     36.73222732543945
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-06",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     7.5850019454956055,
+     35.702022552490234
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-07",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     9.111087799072266,
+     27.59535789489746
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-08",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     6.154670715332031,
+     47.556785583496094
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "threat",
+    "target_id": "one-way-attack-wave-10",
+    "time_seconds": 4.0
+   },
+   {
+    "attributes": {},
+    "kind": "detection",
+    "position": [
+     42.72036361694336,
+     5.242178440093994
+    ],
+    "source_faction_id": "defense",
+    "source_id": "raven-sensor-south",
+    "step": 4,
+    "target_faction_id": "support",
+    "target_id": "support-air-traffic-03",
+    "time_seconds": 4.0
+   }
+  ],
+  "events": {
+   "attacks": [],
+   "intercepts": []
+  },
+  "responses": [
+   {
+    "engagementRange": 38.0,
+    "factionId": "defense",
+    "id": "raven-response-alpha",
+    "position": [
+     84.0,
+     40.0
+    ]
+   }
+  ],
+  "sensors": [
+   {
+    "factionId": "defense",
+    "fovDegrees": 115.0,
+    "headingRadians": 3.5081119537353516,
+    "id": "raven-sensor-north",
+    "position": [
+     52.0,
+     56.0
+    ],
+    "range": 60.0
+   },
+   {
+    "factionId": "defense",
+    "fovDegrees": 115.0,
+    "headingRadians": 3.5081119537353516,
+    "id": "raven-sensor-south",
+    "position": [
+     52.0,
+     24.0
+    ],
+    "range": 60.0
+   }
+  ],
+  "step": 4,
+  "time": 4.0,
+  "truth": [
+   {
+    "active": true,
+    "detected": false,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-01",
+    "position": [
+     6.931178092956543,
+     67.75128936767578
+    ],
+    "status": "active",
+    "velocity": [
+     1.5997116565704346,
+     0.03037692978978157
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-02",
+    "position": [
+     6.745128631591797,
+     74.50775909423828
+    ],
+    "status": "active",
+    "velocity": [
+     1.5609824657440186,
+     0.35118913650512695
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-03",
+    "position": [
+     5.63022518157959,
+     18.75905418395996
+    ],
+    "status": "active",
+    "velocity": [
+     1.0794605016708374,
+     1.1810016632080078
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-04",
+    "position": [
+     7.03713321685791,
+     70.22734832763672
+    ],
+    "status": "active",
+    "velocity": [
+     1.5995959043502808,
+     0.035959552973508835
+    ]
+   },
+   {
+    "active": true,
+    "detected": false,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-05",
+    "position": [
+     9.53583812713623,
+     12.801918983459473
+    ],
+    "status": "active",
+    "velocity": [
+     1.574806809425354,
+     0.2828134596347809
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-06",
+    "position": [
+     6.513985633850098,
+     37.44512176513672
+    ],
+    "status": "active",
+    "velocity": [
+     1.4176549911499023,
+     -0.741791307926178
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-07",
+    "position": [
+     6.403435707092285,
+     34.80228805541992
+    ],
+    "status": "active",
+    "velocity": [
+     1.3489506244659424,
+     -0.8604257702827454
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-08",
+    "position": [
+     8.791259765625,
+     27.287796020507812
+    ],
+    "status": "active",
+    "velocity": [
+     1.5052233934402466,
+     -0.542496919631958
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-09",
+    "position": [
+     7.088095664978027,
+     44.116241455078125
+    ],
+    "status": "active",
+    "velocity": [
+     1.585546851158142,
+     -0.2145712673664093
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-10",
+    "position": [
+     7.252843856811523,
+     49.01459884643555
+    ],
+    "status": "active",
+    "velocity": [
+     1.5383065938949585,
+     0.4400143325328827
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-11",
+    "position": [
+     6.353973388671875,
+     17.892160415649414
+    ],
+    "status": "active",
+    "velocity": [
+     1.0567455291748047,
+     1.2013696432113647
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "threat",
+    "groupId": "one-way-attack-wave",
+    "id": "one-way-attack-wave-12",
+    "position": [
+     7.470324993133545,
+     39.406341552734375
+    ],
+    "status": "active",
+    "velocity": [
+     1.332539677619934,
+     0.8856286406517029
+    ]
+   },
+   {
+    "active": true,
+    "detected": false,
+    "enteredZone": false,
+    "factionId": "support",
+    "groupId": "support-air-traffic",
+    "id": "support-air-traffic-01",
+    "position": [
+     103.46266174316406,
+     6.537738800048828
+    ],
+    "status": "active",
+    "velocity": [
+     0.0,
+     0.800000011920929
+    ]
+   },
+   {
+    "active": true,
+    "detected": false,
+    "enteredZone": false,
+    "factionId": "support",
+    "groupId": "support-air-traffic",
+    "id": "support-air-traffic-02",
+    "position": [
+     73.98027038574219,
+     4.5106401443481445
+    ],
+    "status": "active",
+    "velocity": [
+     0.0,
+     0.800000011920929
+    ]
+   },
+   {
+    "active": true,
+    "detected": true,
+    "enteredZone": false,
+    "factionId": "support",
+    "groupId": "support-air-traffic",
+    "id": "support-air-traffic-03",
+    "position": [
+     43.89061737060547,
+     4.958500385284424
+    ],
+    "status": "active",
+    "velocity": [
+     0.0,
+     0.800000011920929
+    ]
+   },
+   {
+    "active": true,
+    "detected": false,
+    "enteredZone": false,
+    "factionId": "support",
+    "groupId": "support-air-traffic",
+    "id": "support-air-traffic-04",
+    "position": [
+     54.05694580078125,
+     5.118180274963379
+    ],
+    "status": "active",
+    "velocity": [
+     0.0,
+     0.800000011920929
+    ]
+   }
+  ]
+ },
+ "scenario": {
+  "actor_groups": [
+   {
+    "attack_probability": 0.78,
+    "components": {
+     "communications": {
+      "latency_seconds": 0.0,
+      "model": "perfect",
+      "packet_success_probability": 1.0,
+      "range": null
+     },
+     "mobility": {
+      "initial_altitude": 0.0,
+      "max_acceleration": 10000.0,
+      "max_speed": null,
+      "model": "scenario_default"
+     },
+     "tags": []
+    },
+    "count": 12,
+    "domain": "generic",
+    "faction_id": "threat",
+    "id": "one-way-attack-wave",
+    "mission": "attack_objective",
+    "speed": 1.6,
+    "start_edge": "west",
+    "target_zone_id": "raven-airfield"
+   },
+   {
+    "attack_probability": 0.0,
+    "components": {
+     "communications": {
+      "latency_seconds": 0.0,
+      "model": "perfect",
+      "packet_success_probability": 1.0,
+      "range": null
+     },
+     "mobility": {
+      "initial_altitude": 0.0,
+      "max_acceleration": 10000.0,
+      "max_speed": null,
+      "model": "scenario_default"
+     },
+     "tags": []
+    },
+    "count": 4,
+    "domain": "generic",
+    "faction_id": "support",
+    "id": "support-air-traffic",
+    "mission": "transit",
+    "speed": 0.8,
+    "start_edge": "south",
+    "target_zone_id": null
+   }
+  ],
+  "description": "An unclassified fictional Gulf air base defends its runway, aircraft, and support area from a synthetic one-way attack UAS wave while protected support traffic transits the operating area.",
+  "duration_seconds": 150.0,
+  "evaluation_faction_id": "defense",
+  "factions": [
+   {
+    "category": "strategic",
+    "color": "#ff6b6b",
+    "id": "threat",
+    "name": "Threat UAS",
+    "objectives": [
+     "Reach the fictional Raven airfield zone"
+    ]
+   },
+   {
+    "category": "strategic",
+    "color": "#68f0b1",
+    "id": "defense",
+    "name": "Coalition Defense",
+    "objectives": [
+     "Detect inbound tracks",
+     "Protect Raven Air Base"
+    ]
+   },
+   {
+    "category": "background",
+    "color": "#c7d1cd",
+    "id": "support",
+    "name": "Protected Air Traffic",
+    "objectives": [
+     "Transit the fictional operating area"
+    ]
+   }
+  ],
+  "name": "Strait Sentinel \u2014 Raven Air Base Defense",
+  "policy_bindings": [
+   {
+    "actor_group_ids": [
+     "one-way-attack-wave"
+    ],
+    "faction_id": "threat",
+    "id": "threat-movement",
+    "implementation": "scripted",
+    "name": "One-way attack UAS wave",
+    "policy_id": "probe",
+    "role": "movement",
+    "sensor_ids": [],
+    "trainable": true
+   },
+   {
+    "actor_group_ids": [],
+    "faction_id": "defense",
+    "id": "defense-sensing",
+    "implementation": "scripted",
+    "name": "Raven sensor network",
+    "policy_id": "sweep",
+    "role": "sensing",
+    "sensor_ids": [
+     "raven-sensor-north",
+     "raven-sensor-south"
+    ],
+    "trainable": true
+   },
+   {
+    "actor_group_ids": [
+     "support-air-traffic"
+    ],
+    "faction_id": "support",
+    "id": "support-movement",
+    "implementation": "scripted",
+    "name": "Protected support traffic",
+    "policy_id": "transit",
+    "role": "movement",
+    "sensor_ids": [],
+    "trainable": false
+   }
+  ],
+  "protected_zones": [
+   {
+    "altitude": null,
+    "center": [
+     96.0,
+     40.0
+    ],
+    "id": "raven-airfield",
+    "priority": 1.0,
+    "radius": 12.0
+   }
+  ],
+  "relationships": [
+   {
+    "disposition": "opponent",
+    "source_faction_id": "defense",
+    "target_faction_id": "threat"
+   },
+   {
+    "disposition": "protected",
+    "source_faction_id": "defense",
+    "target_faction_id": "support"
+   },
+   {
+    "disposition": "opponent",
+    "source_faction_id": "threat",
+    "target_faction_id": "defense"
+   },
+   {
+    "disposition": "neutral",
+    "source_faction_id": "threat",
+    "target_faction_id": "support"
+   },
+   {
+    "disposition": "neutral",
+    "source_faction_id": "support",
+    "target_faction_id": "threat"
+   },
+   {
+    "disposition": "neutral",
+    "source_faction_id": "support",
+    "target_faction_id": "defense"
+   }
+  ],
+  "responses": [
+   {
+    "altitude": 0.0,
+    "capacity_per_step": 2,
+    "effectiveness": 0.62,
+    "effector": null,
+    "engagement_range": 38.0,
+    "faction_id": "defense",
+    "id": "raven-response-alpha",
+    "position": [
+     84.0,
+     40.0
+    ]
+   }
+  ],
+  "reward_terms": [],
+  "rewards": {
+   "attack_success": 3.0,
+   "intercepted": -1.5,
+   "opponent_attack_success": -4.0,
+   "response_intercept": 1.5
+  },
+  "scenario_id": "strait-sentinel-airbase",
+  "schema_version": "2.0",
+  "seed": 17,
+  "sensors": [
+   {
+    "altitude": 0.0,
+    "capacity": 10,
+    "detection_probability": 0.88,
+    "faction_id": "defense",
+    "fov_degrees": 115.0,
+    "heading_degrees": 180.0,
+    "id": "raven-sensor-north",
+    "measurement_noise": 0.7,
+    "position": [
+     52.0,
+     56.0
+    ],
+    "range": 60.0,
+    "slew_rate_dps": null
+   },
+   {
+    "altitude": 0.0,
+    "capacity": 10,
+    "detection_probability": 0.84,
+    "faction_id": "defense",
+    "fov_degrees": 115.0,
+    "heading_degrees": 180.0,
+    "id": "raven-sensor-south",
+    "measurement_noise": 0.9,
+    "position": [
+     52.0,
+     24.0
+    ],
+    "range": 60.0,
+    "slew_rate_dps": null
+   }
+  ],
+  "simulation": {
+   "effects_interval_seconds": null,
+   "physics_backend": "kinematic_2d",
+   "physics_step_seconds": null,
+   "sensor_interval_seconds": null
+  },
+  "step_seconds": 1.0,
+  "version": 0,
+  "visualization": {
+   "environment": "gulf_airbase",
+   "static_assets": []
+  },
+  "world": {
+   "height": 80.0,
+   "meters_per_unit": null,
+   "vertical_extent": 10.0,
+   "width": 120.0
+  }
+ }
+}

@@ -1,0 +1,46 @@
+// Renderer-neutral terrain manifest. COA loads only measured products
+// (elevation, collision, navigation, visibility, materials); high-detail
+// visual terrain stays in Arena.
+syntax = "proto3";
+
+package pytho.sim.v1;
+
+import "pytho/sim/v1/common.proto";
+
+message Wgs84Origin {
+  double latitude_deg = 1;
+  double longitude_deg = 2;
+  double ellipsoid_height_m = 3;
+}
+
+message TerrainProduct {
+  string product_id = 1;
+  string kind = 2;               // elevation|collision|nav|los|materials
+  ContentHash source_hash = 3;
+  string media_type = 4;
+  string path = 5;               // path inside the bundle content store
+  double resolution_m = 6;
+}
+
+message SemanticSurface {
+  string surface_id = 1;
+  string surface_type = 2;       // runway|road|water|building_footprint|vegetation|open
+  string material_id = 3;
+  bytes polygon_enu = 4;         // packed float64 x,y pairs, meters ENU
+}
+
+message TerrainManifest {
+  string terrain_id = 1;
+  Wgs84Origin origin = 2;
+  string crs = 3;                // e.g. "ENU local tangent plane at origin"
+  string vertical_datum = 4;
+  string units = 5;              // "m"
+  double grid_north_offset_rad = 6; // true-north minus grid-north declaration
+  repeated TerrainProduct products = 7;
+  repeated SemanticSurface surfaces = 8;
+  repeated string material_ids = 9;
+  string classification_label = 10;
+  repeated string visual_asset_refs = 11; // Arena-side visual terrain assets
+  ContentHash manifest_hash = 12;
+  Provenance provenance = 13;
+}
